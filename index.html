@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>BTT Practice Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{--bg:#ECEFEB;--paper:#F7F8F5;--ink:#22302A;--muted:#66736B;--line:#CED6CF;--accent:#6F8A79;--accent-ink:#F7F8F5;--good:#2E7D4F;--goodbg:#E1F1E6;--bad:#B5412F;--badbg:#F8E3DE;--f-display:"Italiana",Georgia,serif;--f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#161B18;--paper:#1E2420;--ink:#E4E9E4;--muted:#9AA69F;--line:#333D37;--accent:#9DB5A5;--accent-ink:#161B18;--good:#5CC487;--goodbg:#173322;--bad:#F08A78;--badbg:#3A1E19;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.bt-wrap{max-width:860px;margin:0 auto;padding:32px 18px 64px;display:grid;gap:22px}
+.bt-eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.bt-h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,7vw,62px);line-height:1;margin:4px 0 8px}
+.bt-lede{margin:0;color:var(--muted);max-width:64ch}
+.bt-tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:thin}
+.bt-tab{flex:0 0 auto;font:600 13px var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:3px;padding:7px 12px;cursor:pointer}
+.bt-tab[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bt-tab.soon{opacity:.55}
+.bt-dayhead{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:18px}
+.bt-h2{font-family:var(--f-display);font-weight:400;font-size:34px;line-height:1.1;margin:0}
+.bt-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:14px}
+.bt-card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px 18px}
+.bt-card h3{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0 0 8px}
+.bt-card p{margin:0 0 6px}.bt-card ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.bt-scope b{font-family:var(--f-display);font-weight:400;font-size:30px;display:block;line-height:1.1}
+.bt-scope a{color:var(--ink)}
+.bt-quizbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:3;border-bottom:1px solid var(--line)}
+.bt-score{font-family:var(--f-mono);font-size:13px}.bt-score b{font-size:16px}
+.bt-filters{display:flex;gap:6px;flex-wrap:wrap}
+.bt-ghost{font:500 13px var(--f-body);background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:6px 10px;cursor:pointer}
+.bt-ghost[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.bt-q{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px 18px;display:grid;gap:12px}
+.bt-qtop{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.bt-qn{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.bt-lvl{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid currentColor;border-radius:2px;padding:1px 6px}
+.bt-lvl.e{color:var(--good)}.bt-lvl.m{color:#9A6B3F}.bt-lvl.h{color:var(--bad)}
+.bt-qtext{font-weight:600;font-size:16px;margin:0}
+.bt-sign{width:110px;height:110px}
+.bt-opts{display:grid;gap:8px}
+.bt-opt{display:flex;gap:10px;align-items:center;text-align:left;width:100%;font:500 15px var(--f-body);color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:4px;padding:10px 12px;cursor:pointer}
+.bt-opt:hover:not(:disabled){border-color:var(--accent)}
+.bt-opt:disabled{cursor:default}
+.bt-box{flex:0 0 20px;height:20px;border:2px solid var(--muted);border-radius:4px;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
+.bt-opt.ok{border-color:var(--good);background:var(--goodbg)}.bt-opt.ok .bt-box{background:var(--good);border-color:var(--good)}
+.bt-opt.no{border-color:var(--bad);background:var(--badbg)}.bt-opt.no .bt-box{background:var(--bad);border-color:var(--bad)}
+.bt-why{display:none;font-size:14px;background:var(--bg);border-radius:4px;padding:10px 12px}
+.bt-why.show{display:block}.bt-why .v{font-weight:700}.bt-why .v.ok{color:var(--good)}.bt-why .v.no{color:var(--bad)}
+.bt-list{display:grid;gap:12px}
+.bt-soon{color:var(--muted)}
+.bt-foot{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+.bt-foot a{color:var(--ink)}
+@media (max-width:720px){.bt-grid{grid-template-columns:1fr}}
+.bt-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.bt-btn{font:600 13px var(--f-body);text-decoration:none;background:var(--ink);color:var(--bg);border:1px solid var(--ink);border-radius:3px;padding:8px 12px}
+.bt-btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+</style>
+</head>
+<body>
+<div id="bt-app"></div>
+
+<!-- ===== DAY 1 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:1,
+tips:[
+"<b>Shape and colour first:</b> blue circle = you MUST (mandatory); red ring = you must NOT (prohibitory). Red octagon = Stop; triangle pointing down = Give Way.",
+"<b>X or slash?</b> On a blue disc with a red ring, an <b>X</b> means <b>No stopping</b>. A single <b>slash</b> means <b>No waiting</b>: you may stop only for passengers to get on or off.",
+"<b>Stop always means stop.</b> Come to a full stop before the white line, even on an empty road. Give Way means slow down and stop only if necessary.",
+"<b>Numbers in a red ring are limits:</b> speed is a maximum, and width (2.3 m), height (4.5 m) and weight (10 t) are the most you may be. Over 4.5 m tall needs a police escort.",
+"<b>Read the whole sign name:</b> 'No entry for lorries' does not ban cars, and '3 or more axles' does not ban a 2-axle vehicle. Mock tests like these traps.",
+"<b>Today:</b> read pp 9–13 (10 min), then do the quiz. If you score under 27/30, re-read the signs you missed and do the Hard questions again tomorrow."
+],
+qs:[
+{l:"e",q:"Traffic signs are put up for two main purposes. What are they?",o:["To regulate traffic, and to warn and inform road users","To decorate the road and mark property lines","To advertise nearby businesses and amenities"],a:0,w:"Signs regulate traffic movements, and warn and inform road users of hazards or useful information (p 9)."},
+{l:"e",s:"stop",q:"What does this sign mean?",o:["Slow down and give way only if a car is coming","Stop before the white line and give way to traffic from the right and left","Stop only if there is a police officer"],a:1,w:"Stop sign: stop before the white line, give way to traffic from the right and left (p 10)."},
+{l:"e",q:"Signs with a blue circular background are generally:",o:["Warning signs","Information signs","Mandatory signs that you must obey"],a:2,w:"Blue circular signs are mandatory (compulsory) signs (pp 9–10)."},
+{l:"e",s:"noentry",q:"What does this sign mean?",o:["No entry for all vehicles","One-way street ahead","Road closed to pedestrians only"],a:0,w:"Red disc with a white bar = No entry for all vehicles (p 11)."},
+{l:"e",s:"speed50",q:"What does this sign mean?",o:["Recommended speed 50 km/h","Do not exceed 50 km/h","Minimum speed 50 km/h"],a:1,w:"A number in a red ring is a speed limit: do not exceed it (p 13)."},
+{l:"e",s:"giveway",q:"What should you do at this sign?",o:["Slow down, stop if necessary, and give way to traffic on the major road","Always come to a full stop","You have priority over the major road"],a:0,w:"Give Way: slow down, stop if necessary, give way to traffic on the major road (p 10)."},
+{l:"e",q:"Disobeying a mandatory sign is:",o:["Only advice, not an offence","An offence only if it causes an accident","An offence"],a:2,w:"Mandatory signs are compulsory; it is an offence to disobey them (p 9)."},
+{l:"e",s:"left",q:"What does this sign mean?",o:["No left turn","Turn left only","Left lane ends ahead"],a:1,w:"Blue circle with a left arrow = Turn left only (p 9)."},
+{l:"e",s:"ahead",q:"What does this sign mean?",o:["Ahead only","Overtaking permitted","One-way street begins"],a:0,w:"Blue circle with an upward arrow = Ahead only (p 9)."},
+{l:"e",s:"noright",q:"What does this sign mean?",o:["Right turn only","Sharp bend to the right","No right turn"],a:2,w:"Red ring with a crossed-out right arrow = No right turn (p 11)."},
+{l:"m",s:"nostop",q:"What does this sign mean?",o:["No waiting","No stopping","No parking for lorries"],a:1,w:"Blue disc, red ring and a red X = No stopping (p 11)."},
+{l:"m",s:"nowait",q:"What does this sign allow?",o:["Stopping only to let passengers board or alight","Stopping for up to 15 minutes","No stopping at all"],a:0,w:"No waiting: vehicles may stop only to allow boarding or alighting (p 11)."},
+{l:"m",s:"keepleft",q:"What does this sign tell you to do?",o:["Turn left at the next junction","Keep to the left (pass on the left of it)","Left lane closed ahead"],a:1,w:"Mandatory Keep left sign (p 9)."},
+{l:"m",s:"split",q:"What does this 'split traffic' sign mean?",o:["Traffic must keep left","Road divides; no entry ahead","Vehicles may pass on either side"],a:2,w:"Split traffic: vehicles may pass on either side (p 9)."},
+{l:"m",q:"You see a 'Stop for children to cross the road' sign. You must:",o:["Stop","Slow down and continue if no children are on the road","Sound your horn to warn the children"],a:0,w:"It is a mandatory sign: stop for children to cross (p 10)."},
+{l:"m",s:"height",q:"This sign prohibits:",o:["Vehicles taller than 4.5 m","Vehicles longer than 4.5 m","Parking within 4.5 m"],a:0,w:"Height limit: no entry for vehicles over 4.5 m overall height (p 12)."},
+{l:"m",s:"width",q:"This sign means:",o:["The road ahead is 2.3 m wide","Keep a 2.3 m gap from the car in front","No entry for vehicles wider than 2.3 m"],a:2,w:"Width limit: prohibits vehicles wider than 2.3 m (p 12)."},
+{l:"m",q:"A '10 tonnes' weight limit sign applies to a vehicle's weight when it is:",o:["Laden only","Laden or unladen","Unladen only"],a:1,w:"The weight limit covers weight laden or unladen (p 12)."},
+{l:"m",q:"Where a 'No sounding of horn' sign is displayed, you may use your horn:",o:["Only to prevent an accident","Never, for any reason","Only between 7am and 7pm"],a:0,w:"No sounding of horn, except to prevent an accident (p 13)."},
+{l:"m",q:"A prohibitory sign is usually recognised by:",o:["A blue circular background","A red circular border","A red triangle"],a:1,w:"Prohibitory signs have a red ring (pp 11–13)."},
+{l:"h",q:"You reach a STOP sign and the road is completely clear in both directions. You should:",o:["Roll slowly over the line since nothing is coming","Stop only if there is traffic","Come to a complete stop before the white line, then go when safe"],a:2,w:"A Stop sign always requires a full stop before the line, whatever the traffic (p 10)."},
+{l:"h",s:"nowait",q:"Under this sign, you want to unload heavy boxes from your car for 10 minutes. Is that allowed?",o:["Yes, loading is always allowed","No. You may stop only for passengers to board or alight","Yes, if your hazard lights are on"],a:1,w:"No waiting allows stopping only for boarding or alighting. A separate sign covers loading/unloading (p 11)."},
+{l:"h",q:"A sign reads 'No waiting and no loading/unloading during stated hours'. Outside those hours:",o:["The restriction does not apply","The restriction still applies at all times","Only loading is allowed"],a:0,w:"The restriction applies during the stated hours only (p 11)."},
+{l:"h",q:"A lorry with 2 axles reaches a 'No entry for vehicles with 3 or more axles' sign. It:",o:["Must not enter","May enter only with a police escort","May enter"],a:2,w:"The ban covers vehicles with 3 or more axles only (p 13)."},
+{l:"h",q:"A speed limit sign shows 70 km/h, but your vehicle's speed-limit plate says 60 km/h. Your maximum speed is:",o:["60 km/h","70 km/h","65 km/h"],a:0,w:"Never exceed your vehicle's limit or the road's, whichever is lower (pp 34, 52)."},
+{l:"h",q:"Which of these is a MANDATORY sign (not a prohibitory one)?",o:["No overtaking","Keep left","No entry for lorries"],a:1,w:"Keep left is mandatory (blue circle). The others are prohibitory (pp 9–13)."},
+{l:"h",q:"Which of these is NOT a prohibitory sign?",o:["No left turn","No entry for motorcycles","Turn left ahead"],a:2,w:"Turn left ahead is a mandatory sign (p 9)."},
+{l:"h",q:"A 'No entry for motorcycles and pedal cycles' sign applies to cars?",o:["No, only motorcycles and bicycles are banned","Yes, all vehicles are banned","Only during peak hours"],a:0,w:"It bans motorcycles and pedal cycles only (p 13)."},
+{l:"h",q:"What is the key difference between a Stop sign and a Give Way sign?",o:["There is no difference","Stop requires a full stop every time; Give Way requires a stop only if necessary","Give Way requires a full stop; Stop does not"],a:1,w:"Compare p 10: Stop = stop before the line; Give Way = slow down, stop if necessary."},
+{l:"h",s:"height",q:"Your vehicle is 4.6 m tall and you are travelling with a police escort. Under the handbook rule:",o:["It is still an offence in all cases","You must reduce height to under 4.5 m first","It is permitted with a police escort"],a:2,w:"Driving a vehicle over 4.5 m tall without a police escort is the offence (pp 12, 58)."}
+]});
+</script>
+
+<!-- ===== DAY 2 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:2,
+tips:[
+"<b>Triangle = warning.</b> Every warning sign starts with the same instruction: <b>slow down and take extra care</b>. If an answer tells you to speed up or ignore it, it's wrong.",
+"<b>The 'no-no-no' trio:</b> at bends, steep slopes and roads that narrow, the handbook says <b>do not overtake, make a U-turn or park</b>. Expect a question that offers one of these as an option.",
+"<b>Junction signs tell you where traffic comes from:</b> T junction = from the right AND left; side road = from the side shown; merging = from the left; Y junction = from the side(s) shown.",
+"<b>Two numbers today:</b> breakdown triangle at least <b>20 m</b> behind the vehicle; Friendly Streets maximum <b>40 km/h</b>.",
+"<b>Regulatory signs (pp 19–20)</b> are about how you move: keep left and leave the far-right lane for overtaking; give way where lanes converge; 'One-way traffic' lets you turn right or left; 'One-way street' marks where the one-way section begins.",
+"<b>Today:</b> read pp 14–20 and look at every triangle, then do the quiz. Re-do any Day 1 question you got wrong before you start."
+],
+qs:[
+{l:"e",q:"What do warning signs generally tell you to do?",o:["Speed up to clear the hazard quickly","Take extra care and slow down","Sound your horn"],a:1,w:"Warning signs: take extra care, slow down as you approach them (p 14)."},
+{l:"e",s:"bendright",q:"What should you do at this sign?",o:["Slow down, keep left, and do not overtake, U-turn or park","Move to the right lane to see better","Overtake before the bend"],a:0,w:"Right bend: slow down, keep left, do not overtake, make a U-turn or park (p 14)."},
+{l:"e",s:"crossjn",q:"What does this sign warn you of?",o:["A hospital ahead","A cross junction: beware of traffic approaching the junction","A church ahead"],a:1,w:"Cross junction: slow down, beware of traffic approaching the junction (p 14)."},
+{l:"e",s:"roundabout",q:"At the roundabout ahead, you give way to traffic:",o:["On your left","Behind you","On your right"],a:2,w:"Roundabout: slow down, stop if necessary, give way to traffic on the right (p 16)."},
+{l:"e",s:"lights",q:"This sign means:",o:["Light signals ahead: beware of the lights changing","Lights out of order","Street lighting ends"],a:0,w:"Light signals ahead (p 16)."},
+{l:"e",q:"Most warning signs are shaped like:",o:["A blue circle","A red-bordered triangle","A green rectangle"],a:1,w:"Warning signs are red-bordered triangles (pp 14–18)."},
+{l:"e",q:"A 'Slippery road' sign means you should:",o:["Brake hard if you skid","Slow down and drive carefully","Keep your speed steady"],a:1,w:"Slippery road: slow down, drive carefully (p 17)."},
+{l:"e",q:"A 'Children' warning sign means:",o:["A playground is closed","Slow down and beware of children crossing the road","Children's cycling lane only"],a:1,w:"Children: slow down, beware of children crossing (p 18)."},
+{l:"e",s:"hump",q:"What should you do at this sign?",o:["Speed up to get over it","Move into the right lane","Slow down, keep left, do not overtake"],a:2,w:"Road hump ahead: slow down, keep left, do not overtake (p 17)."},
+{l:"e",q:"'Pedestrian crossing ahead' means:",o:["Slow down and stop for pedestrians at the designated crossing","Pedestrians must give way to you","Sound your horn to warn pedestrians"],a:0,w:"Pedestrian crossing ahead (p 16)."},
+{l:"m",s:"tjn",q:"At this T junction sign, you should give way to traffic from:",o:["The right only","The left only","The right and left"],a:2,w:"T junction: slow down, give way to traffic from the right and left (p 14)."},
+{l:"m",s:"sideleft",q:"This side road sign warns you to beware of vehicles:",o:["From the left","From behind","From the right"],a:0,w:"Side road (left): beware of vehicles from the left (p 15)."},
+{l:"m",s:"merge",q:"This 'merging traffic' sign warns of traffic joining from:",o:["The right","The left","Both sides"],a:1,w:"Merging traffic: beware of traffic joining from the left (p 15)."},
+{l:"m",q:"A 'staggered junction' sign warns you of vehicles from:",o:["The right and left","Behind only","Oncoming lanes only"],a:0,w:"Staggered junction: beware of vehicles from the right and left (p 15)."},
+{l:"m",s:"twoway",q:"This sign means:",o:["Overtaking lane ahead","One-way street","Two-way traffic ahead: keep left, beware of oncoming traffic"],a:2,w:"Two-way traffic ahead (p 15)."},
+{l:"m",s:"breakdown",q:"Where should this vehicle breakdown sign be placed?",o:["On the roof of the car","At least 20 m from the rear of the vehicle","5 m in front of the vehicle"],a:1,w:"Vehicle breakdown sign: at least 20 m from the rear (p 17)."},
+{l:"m",s:"slope",q:"At a steep downward slope sign, you should:",o:["Keep left, change to a lower gear, and not overtake, U-turn or park","Change to neutral to save fuel","Overtake slow vehicles before the slope"],a:0,w:"Steep slope: keep left, lower gear, do not overtake, U-turn or park (p 17)."},
+{l:"m",q:"An 'ungated level crossing' sign warns you to:",o:["Beware of the gate closing","Slow down and beware of trains approaching","Stop for a toll gate"],a:1,w:"Ungated level crossing: beware of trains approaching (p 17)."},
+{l:"m",q:"The 'Electronic Road Pricing zone ahead' sign tells you:",o:["Parking charges apply","Speed cameras are ahead","A road charge applies when entering the zone during restricted hours"],a:2,w:"ERP zone ahead (p 16)."},
+{l:"m",q:"The 'Expressway ahead' warning sign tells you that:",o:["Certain types of vehicles are prohibited from the expressway","All vehicles must speed up","Expressway tolls start"],a:0,w:"Expressway ahead: certain vehicles are prohibited (p 16)."},
+{l:"h",q:"A 'dual-carriageway ends' sign means you should:",o:["Expect the start of an expressway","Slow down, keep left, and beware of oncoming traffic","Move to the right lane"],a:1,w:"Dual-carriageway ends: oncoming traffic will now share the road (p 16)."},
+{l:"h",s:"narrows",q:"At this 'road narrows' sign, which of these IS allowed?",o:["Overtaking the vehicle ahead","Making a U-turn","Slowing down and continuing carefully"],a:2,w:"Road narrows: slow down; do not overtake, U-turn or park (p 16)."},
+{l:"h",q:"At a 'series of bends' sign, which two actions are BOTH prohibited?",o:["Keeping left and slowing down","Overtaking and parking","Signalling and using mirrors"],a:1,w:"Series of bends: slow down, keep left; do not overtake, U-turn or park (p 14)."},
+{l:"h",q:"'Start of Friendly Streets' means vehicles:",o:["Must not exceed 40 km/h and must look out for active mobility users","May use the footpath","Must not exceed 30 km/h at all times"],a:0,w:"Friendly Streets: not more than 40 km/h (p 18)."},
+{l:"h",q:"'Start of Silver Zone' tells you to slow down and:",o:["Look out for elderly pedestrians and keep to the posted speed limit","Look out for school buses","Switch on your headlights"],a:0,w:"Silver Zone: look out for elderly pedestrians; follow the posted limit (p 18)."},
+{l:"h",q:"A regulatory sign says 'Keep to the left side of the road'. What else does it tell you?",o:["Park on the left only","Leave the outermost right lane for overtaking vehicles","Do not use the left lane"],a:1,w:"p 19: keep left and leave the outermost right lane for overtaking vehicles."},
+{l:"h",q:"A blue 'One-way traffic' sign at a junction means vehicles:",o:["May turn right or left","May turn left only","Must go straight ahead"],a:0,w:"One-way traffic: vehicles may turn right or left (p 20)."},
+{l:"h",q:"The 'One-way street' sign means:",o:["The road ahead is closed","The one-way street begins from this sign","One-way traffic ends here"],a:1,w:"One-way street: begins from this sign (p 20)."},
+{l:"h",s:"chevron",q:"What do these curve alignment markers tell you?",o:["Overtake on the left","A U-turn point","Slow down and drive carefully at the bend"],a:2,w:"Curve alignment markers: slow down and drive carefully at bends (p 20)."},
+{l:"h",q:"A 'Low flying aircraft ahead' sign warns you to:",o:["Stop until the aircraft passes","Beware of sudden noise from low-flying aircraft","Switch off your radio"],a:1,w:"Low flying aircraft: beware of sudden noise (p 18)."}
+]});
+</script>
+
+<!-- ===== DAY 3 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:3,
+tips:[
+"<b>Three numbers to lock in:</b> no parking or stopping within <b>9 m</b> of a bus stop; long goods vehicles are over <b>10 m</b> (trailers over 5 m); power-assisted bicycle riders must be at least <b>16</b>.",
+"<b>Tunnel lane signals work like traffic lights:</b> green arrow = lane open; flashing amber X = possible obstruction, slow down and get ready to change lane; red X = lane closed.",
+"<b>EMAS travel-time colours:</b> green = up to 50% more than normal; yellow = 50–125% more; red = more than 125%. Lanes are numbered from the <b>fast lane</b> (lane 1) to the slow lane, not counting the shoulder.",
+"<b>Sign colours:</b> green = directions; white text in a blue panel = an expressway destination; black on white = facilities; brown = tourist places.",
+"<b>Whichever is lower:</b> buses, goods vehicles and trailers obey their own vehicle speed limit or the road limit, whichever is lower.",
+"<b>Today:</b> read pp 21–34. These pages are mostly pictures, so spend the time looking at each sign and saying its meaning out loud."
+],
+qs:[
+{l:"e",q:"Information signs are mainly meant to:",o:["Give road users useful information","Prohibit certain vehicles","Warn of hazards ahead"],a:0,w:"Information signs give road users information (p 21)."},
+{l:"e",q:"How close to a bus stop may you park or stop?",o:["No closer than 6 m","No closer than 9 m","No closer than 3 m"],a:1,w:"No parking or stopping within 9 m of a bus stop, or inside the bus bay, except buses (p 21)."},
+{l:"e",s:"tgreen",q:"In a tunnel, this signal above your lane means:",o:["Lane closed","Slow down, obstruction ahead","Lane open"],a:2,w:"Green arrow = lane open (p 25)."},
+{l:"e",s:"tred",q:"In a tunnel, this red X above your lane means:",o:["Lane closed","Lane open for buses only","Speed camera ahead"],a:0,w:"Red cross = lane closed (p 25)."},
+{l:"e",q:"A red man pedestrian signal means pedestrians:",o:["May cross quickly","Must not cross","May cross if no cars are coming"],a:1,w:"Red man = do not cross (p 24)."},
+{l:"e",q:"Directional signs are usually rectangular with a:",o:["Blue background","Brown background","Green background"],a:2,w:"Directional signs: rectangular, green background (p 27)."},
+{l:"e",q:"Signs for tourist places have:",o:["A brown background","A green background","An orange background"],a:0,w:"Tourist directions: white multi-lingual text on brown (p 34)."},
+{l:"e",q:"Facility signs (e.g. to a hospital or car park) have:",o:["White letters on blue","Black letters on a white background","Yellow letters on green"],a:1,w:"Facility signs: black letters, white background, black border (p 34)."},
+{l:"e",q:"Cyclists riding at night must have:",o:["Only a bell","A white front light and a red rear light or reflector","Hazard lights"],a:1,w:"p 25–26: front white light, rear red light/reflector at night."},
+{l:"e",q:"Cycling on expressways and in road tunnels is:",o:["Allowed in the left lane","Allowed at night only","Prohibited"],a:2,w:"Cyclists must not ride on expressways or in road tunnels (p 25)."},
+{l:"m",s:"tamber",q:"In a tunnel, a flashing amber X above your lane means:",o:["Possible obstruction ahead: slow down and be ready to change lane","Lane permanently closed","End of tunnel"],a:0,w:"Flashing amber cross = caution (p 25)."},
+{l:"m",q:"What should you switch on when entering a road tunnel?",o:["Hazard lights","Headlights and the radio","Interior lights"],a:1,w:"Tunnel sign: switch on headlights and turn on radio (p 25)."},
+{l:"m",q:"A flickering green man means pedestrians:",o:["Should not start to cross","Have extra time to start crossing","Must run"],a:0,w:"Do not cross when the green man flickers (p 24)."},
+{l:"m",q:"A 'Red light camera ahead' sign tells you to:",o:["Speed up before the lights change","Get ready to stop when the lights change to amber","Ignore it if no camera is visible"],a:1,w:"p 21: get ready to stop when signals change to amber."},
+{l:"m",q:"At a 'U-turn facility ahead' sign, where do you make the U-turn?",o:["Before the sign","At any gap after the sign","After the sign, at the U-turn facility"],a:2,w:"U-turn facility ahead: make the U-turn after the sign (p 21)."},
+{l:"m",q:"The 'End of expressway' sign tells you to:",o:["Slow down to the speed limit of the road ahead","Speed up to merge","Stop at the end"],a:0,w:"End of expressway: reduce speed to the next road's limit (p 22)."},
+{l:"m",q:"The 'white walking sticks' sign warns you to watch out for:",o:["Elderly hikers","Blind or visually impaired pedestrians","Construction workers"],a:1,w:"White sticks: beware of blind pedestrians; give way (p 22)."},
+{l:"m",q:"On an EMAS Travel Time Display, a time shown in yellow means the journey is:",o:["Normal","50–125% longer than normal","More than 125% longer"],a:1,w:"Green ≤50%, yellow 50–125%, red >125% (p 29)."},
+{l:"m",q:"Destinations on an expressway are shown on directional signs as:",o:["White text in a blue panel","Black text on yellow","Red text on white"],a:0,w:"Expressway destination text is encased in a blue background (p 27)."},
+{l:"m",q:"A power-assisted bicycle (PAB) rider, including a pillion, must be at least:",o:["14 years old","18 years old","16 years old"],a:2,w:"Minimum age 16 (p 26)."},
+{l:"h",q:"On EMAS signboards, which lane is 'lane 1'?",o:["The road shoulder","The fast (rightmost) lane","The slow (leftmost) lane"],a:1,w:"Lanes are numbered from the fast lane to the slow lane, excluding the shoulder (p 32)."},
+{l:"h",q:"On an EMAS Traffic Information Display, a flashing red bar means:",o:["Road closure ahead","Heavy rain","Speed camera"],a:0,w:"Flashing red bar = road closure ahead (p 30)."},
+{l:"h",q:"On EMAS, the acronym 'SH' means:",o:["Shuttle","Speed hump","Shoulder"],a:2,w:"AFT after, BEF before, LN lane, SH shoulder, VEH vehicle (p 33)."},
+{l:"h",q:"A goods vehicle counts as a 'long vehicle' (needing reflective markings) when it is longer than:",o:["5 m","10 m","13 m"],a:1,w:"Goods vehicles over 10 m; trailers over 5 m; mobile cranes over 10 m (p 34)."},
+{l:"h",q:"Long vehicles must show at least ___ yellow reflective markings on each side:",o:["3","1","5"],a:0,w:"At least 3 yellow on each side and 1 red at the rear (p 34)."},
+{l:"h",q:"A bus with a vehicle speed limit of 60 km/h is on a 70 km/h road. Its maximum speed is:",o:["70 km/h","65 km/h","60 km/h"],a:2,w:"Vehicle limit or road limit, whichever is lower (p 34)."},
+{l:"h",q:"At a 'Bus Priority Box' (yellow area at a bus bay), you must:",o:["Wait inside the yellow box","Stop before the give-way line and give way to buses leaving the bay","Overtake the bus quickly"],a:1,w:"Mandatory give-way to buses (pp 22, 41)."},
+{l:"h",q:"A cycling group on the road may be at most:",o:["5 in single file, or 10 riding two abreast","10 in single file","20 riding two abreast"],a:0,w:"p 25: max 5 in single file or 10 two abreast."},
+{l:"h",q:"'Tow-away zone' means:",o:["Only tow trucks may park","Free parking for 10 minutes","Vehicles parked there may be towed away"],a:2,w:"Tow-away zone (p 23)."},
+{l:"h",q:"The 'Traffic signals operating hours' sign tells you that:",o:["The lights work only during the hours shown","Turning is banned outside those hours","Pedestrians have priority at all times"],a:0,w:"The traffic lights operate only during the stated hours (p 23)."}
+]});
+</script>
+
+<!-- ===== DAY 4 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:4,
+tips:[
+"<b>White lines control how you move; yellow lines control where you can park or stop.</b> Double lines are always stricter than single ones.",
+"<b>Zig-zags:</b> single yellow = no parking at all times (pick-up and drop-off OK); double yellow = <b>no stopping</b> at all times; white zig-zags before a crossing = no stopping, no overtaking, no waiting.",
+"<b>Times to memorise:</b> single yellow line = no parking <b>7am–7pm</b> except Sundays and public holidays; normal bus lane = <b>Mon–Fri 7:30–9:30am and 5–8pm</b>; full-day bus lane (yellow + red line) = <b>Mon–Sat 7:30am–11pm</b>.",
+"<b>Double white lines:</b> never cross them, no U-turn, no right turn, no parking on either side. Overtaking is allowed only if you stay entirely to the left of them.",
+"<b>Merging arrows:</b> vehicles from the two lanes take turns. <b>Yellow box:</b> don't enter it if you'd block it.",
+"<b>Today:</b> read pp 35–43 and look at every road-marking picture. The test often shows the marking and asks what it means."
+],
+qs:[
+{l:"e",q:"Parallel broken white lines across the road mean:",o:["Give way to traffic on the major road","Stop line","Pedestrian crossing"],a:0,w:"Give way to traffic on a major road (p 35)."},
+{l:"e",q:"A single solid white line across your lane means:",o:["Slow down","Stop close to and before the line","Bus lane starts"],a:1,w:"Stop and stop close to and before the line (p 35)."},
+{l:"e",q:"At a zebra crossing, you must:",o:["Sound your horn and go","Speed up to clear it","Slow down and stop if pedestrians or cyclists are crossing or about to cross"],a:2,w:"Zebra crossing (p 35)."},
+{l:"e",s:"bwl",q:"A broken white centre line on a two-way road means:",o:["Keep to the left of the line","No overtaking","Bus lane"],a:0,w:"p 37: keep to the left of a broken white centre line."},
+{l:"e",s:"dyl",q:"Double yellow lines along the side of the road mean:",o:["No parking 7am–7pm only","No parking at any time (immediate pick-up or drop-off allowed)","Loading bay"],a:1,w:"Unbroken double yellow lines (p 38)."},
+{l:"e",s:"syl",q:"A single unbroken yellow line at the roadside means:",o:["No parking at any time","No stopping","No parking 7am–7pm, except Sundays and public holidays"],a:2,w:"Unbroken yellow line (p 38)."},
+{l:"e",q:"A brick-red road surface near a school marks:",o:["A School Zone","A bus lane","A cycle lane"],a:0,w:"School zone: red textured surface (p 39)."},
+{l:"e",q:"Direction arrows painted in your lane mean:",o:["Suggested directions only","Proceed only in the direction shown","Lane closing"],a:1,w:"Only proceed in the direction shown (p 43)."},
+{l:"e",q:"A road hump marking means you should:",o:["Speed up","Change lanes","Slow down"],a:2,w:"Hump: slow down (p 36)."},
+{l:"e",q:"In a right-turn pocket, you should:",o:["Stay in the pocket until it is clear to complete the turn","Move out into the junction and wait","Overtake the car in front"],a:0,w:"p 42."},
+{l:"m",s:"dwl",q:"Double unbroken white lines in the centre of the road mean:",o:["You may cross to overtake if clear","Never cross; no U-turn or right turn; no parking on either side","Lane for emergency vehicles"],a:1,w:"p 37."},
+{l:"m",s:"dzz",q:"Double yellow zig-zag lines at the roadside mean:",o:["No parking, but you may stop briefly","Bus stop","No stopping at any time"],a:2,w:"Double yellow zig-zag = no stopping at all times; demerit points and a fine (p 38)."},
+{l:"m",s:"szz",q:"A single yellow zig-zag line at the roadside means:",o:["No parking at any time (immediate pick-up/drop-off allowed)","No stopping at any time","Taxi stand"],a:0,w:"p 38."},
+{l:"m",q:"White zig-zag lines by the side of the road warn of:",o:["A bus stop","A pedestrian crossing ahead","A school"],a:1,w:"p 42: advance warning of a pedestrian crossing; no stopping at all times."},
+{l:"m",s:"buslane",q:"A yellow line with a parallel red line marks a:",o:["Normal bus lane","Taxi lane","Full-day bus lane"],a:2,w:"Full-day bus lane: Mon–Sat 7:30am–11pm (p 40)."},
+{l:"m",q:"Normal bus lane hours are:",o:["Mon–Fri 7:30–9:30am and 5–8pm","Mon–Sat 7:30am–11pm","Every day 7am–7pm"],a:0,w:"p 40; not Saturdays, Sundays or public holidays."},
+{l:"m",q:"You may drive across a bus lane during its operating hours where:",o:["The bus lane has no buses in it","There is a broken yellow line, to turn into or out of a side road","You signal left"],a:1,w:"p 40."},
+{l:"m",q:"Merging arrows show two lanes becoming one. Who has right of way?",o:["The left lane","Vehicles already in front","Vehicles from the two lanes take turns"],a:2,w:"Alternate vehicles have right-of-way (p 43)."},
+{l:"m",q:"Triangular 'traffic calming' markings on the sides of the road are meant to:",o:["Make the road look narrower so you slow down","Mark parking bays","Show a bus stop"],a:0,w:"p 42."},
+{l:"m",q:"The red 'enhanced chevron zone' at a bus-stop separator means:",o:["Parking for buses only","No driving or parking on it","Cyclists only"],a:1,w:"p 41."},
+{l:"h",q:"Can you cross a single continuous white centre line?",o:["Never","Only at night","Only when the road ahead is clear and it is safe"],a:2,w:"You may cross a single continuous or broken white line when the road ahead is clear and safe (p 37)."},
+{l:"h",q:"With double white lines in the centre, overtaking is:",o:["Allowed only if you keep entirely to the left of the lines","Never allowed for any vehicle","Allowed if you cross briefly"],a:0,w:"p 37."},
+{l:"h",q:"Are pedestrians allowed to cross the road on the white zig-zag section?",o:["Yes, if no car is coming","No, it is prohibited","Only at night"],a:1,w:"p 42."},
+{l:"h",q:"It is Saturday 8am. Can you drive in a normal (yellow-line only) bus lane?",o:["No, it operates every day","Only if you are turning","Yes, normal bus lanes don't operate on Saturdays"],a:2,w:"Normal bus lanes: Mon–Fri only (p 40)."},
+{l:"h",q:"It is Saturday 8am. Can you drive in a full-day bus lane?",o:["No, it operates Mon–Sat 7:30am–11pm","Yes, weekends are free","Only if no bus is in sight"],a:0,w:"Full-day bus lane (p 40)."},
+{l:"h",q:"Which vehicles may use a bus lane during its operating hours?",o:["Taxis with passengers","Omnibuses, bicycles, emergency and police vehicles","Any car with 3 or more people"],a:1,w:"p 40. Non-scheduled buses may use it but not stop to pick up or drop off."},
+{l:"h",q:"A school bus uses a bus lane during its hours. It may:",o:["Stop in it to pick up children","Park in it for 5 minutes","Use it but not stop in it to pick up or drop off"],a:2,w:"Non-scheduled buses may not stop in the bus lane to pick up or drop off (p 40)."},
+{l:"h",s:"ybox",q:"Traffic in the left lane beyond the yellow box is at a standstill and your light is green. You should:",o:["Wait behind the box until your exit is clear","Drive in, since your light is green","Sound your horn"],a:0,w:"Do not drive into the yellow box when traffic at the left lane is at a standstill (p 39)."},
+{l:"h",q:"A broken white line next to an accelerating lane marks:",o:["A bus lane","The edge of the road next to the accelerating lane","A no-overtaking zone"],a:1,w:"p 38."},
+{l:"h",q:"With double yellow lines, are you allowed to stop briefly to let a passenger out?",o:["No, never","Only on Sundays","Yes, immediate picking up and letting down is allowed"],a:2,w:"Double yellow lines allow immediate pick-up and drop-off (p 38). Double yellow zig-zags do not."}
+]});
+</script>
+
+<!-- ===== DAY 5 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:5,
+tips:[
+"<b>Amber means STOP.</b> The only exception is when you are so close to the stop line that you can't stop safely. Amber never means 'speed up'.",
+"<b>Flashing amber shows up in two places:</b> on normal traffic lights it means they're <b>out of order</b> (go with caution and give way to the right); as advanced warning lights before a blind bend it means <b>prepare to stop</b>.",
+"<b>Arrows:</b> red arrow = no turning that way, even if nothing is coming. Flickering green arrow = don't go if you haven't crossed the stop line. Green 'B' = buses only.",
+"<b>A police officer's signal overrides everything:</b> signs, lights, markings and the rules. Learn all six police pictures on pp 47–48.",
+"<b>Signal in good time</b> before turning, changing lanes, slowing, stopping, pulling out of a parking place or overtaking (p 49).",
+"<b>Today:</b> read pp 44–49. Cover the meanings and test yourself on each light and police picture."
+],
+qs:[
+{l:"e",s:"lred",q:"A red traffic light means:",o:["Stop","Proceed with caution","Turn left only"],a:0,w:"Red means STOP (p 44)."},
+{l:"e",q:"A green traffic light means:",o:["Go immediately without looking","Go, after looking right and left to make sure it's safe","Slow down"],a:1,w:"p 44."},
+{l:"e",s:"lamber",q:"A steady amber light means:",o:["Speed up to beat the red","Get ready to go","Stop, unless you are too close to the stop line to stop safely"],a:2,w:"p 44."},
+{l:"e",s:"lgreenb",q:"A green 'B' light means:",o:["Go, for buses only","Go, for bicycles","Go, for all vehicles"],a:0,w:"p 45."},
+{l:"e",q:"A police officer directing traffic gives a signal that differs from the traffic light. You follow:",o:["The traffic light","The police officer","Whatever is safer for you"],a:1,w:"Police signals take precedence (p 47)."},
+{l:"e",q:"'All red' at a junction means:",o:["Turn left on red","Proceed with caution","Every approach shows red; don't move until your light turns green"],a:2,w:"p 44."},
+{l:"e",s:"lgreenarrow",q:"A green arrow pointing right means:",o:["Go in that direction, after making sure oncoming traffic is clear","Turn right is prohibited","Right lane closed"],a:0,w:"p 44."},
+{l:"e",s:"lredarrow",q:"A red arrow pointing right means:",o:["Turn right with caution","Stop behind the line; do not turn right","Right lane for buses"],a:1,w:"p 45."},
+{l:"e",q:"Before you turn, change lanes, slow down or stop, you should:",o:["Sound the horn","Flash your headlights","Give a clear signal in good time"],a:2,w:"p 49."},
+{l:"e",q:"Intelligent road studs blink when:",o:["The green man for pedestrians comes on","It starts raining","A bus approaches"],a:0,w:"p 46: turning vehicles must watch out and give way to pedestrians."},
+{l:"m",q:"Traffic lights are flashing amber at a junction. You should:",o:["Stop and wait for green","Proceed with caution and give way to traffic on the right","Speed through before they change"],a:1,w:"Flashing amber = signals out of order (p 44)."},
+{l:"m",q:"A green arrow starts flickering and you have NOT crossed the stop line. You should:",o:["Speed up","Turn quickly","Not proceed"],a:2,w:"Signal is about to be cancelled (p 44)."},
+{l:"m",q:"An amber arrow means:",o:["Get ready to stop behind the stop line for that direction","Go in that direction","Give way to buses"],a:0,w:"p 45."},
+{l:"m",q:"Two flashing amber lights with a 'light signals ahead' sign and a blue 'prepare to stop' sign before a bend mean:",o:["The lights ahead are broken","Slow down and be prepared to stop","Bus lane ahead"],a:1,w:"Advanced warning lights (p 45)."},
+{l:"m",q:"Why are advanced warning lights placed before some bends?",o:["To mark speed cameras","To show the end of an expressway","Because the traffic light ahead can't be seen clearly"],a:2,w:"p 45."},
+{l:"m",q:"The main straight-ahead light is green but there is a red right arrow. Vehicles turning right must:",o:["Stop behind the stop line","Turn if no oncoming traffic","Wait inside the junction"],a:0,w:"p 46 examples."},
+{l:"m",q:"When the intelligent road studs blink, turning vehicles must:",o:["Speed up","Give way to pedestrians crossing","Sound the horn"],a:1,w:"p 46."},
+{l:"m",q:"Police signal (a) on p 47 means:",o:["Traffic from the right may go","Right-turning vehicles may go","Vehicles from all directions stop"],a:2,w:"p 47."},
+{l:"m",q:"Police signal (b): what do vehicles approaching from the officer's right and left do?",o:["They may proceed","They stop","They turn left only"],a:0,w:"(b): front and behind stop; right and left proceed (p 47)."},
+{l:"m",q:"Hand signals should be given before you:",o:["Stop at a red light only","Turn, slow down or stop, pull out of a parking place, or pull out to pass","Enter a car park only"],a:1,w:"p 49."},
+{l:"h",q:"The light turns amber when you are already so close to the stop line that you couldn't stop safely. You should:",o:["Brake hard anyway","Reverse","Proceed with care"],a:2,w:"Amber means stop UNLESS you are so close that you cannot stop safely (p 44)."},
+{l:"h",q:"A red arrow pointing right, and the opposite road is completely empty. Can you turn right?",o:["No; do not turn right even with no oncoming traffic","Yes, carefully","Yes, if you signal"],a:0,w:"p 45."},
+{l:"h",q:"Police signal (c): which vehicles may proceed?",o:["Those from the officer's right","Those from the officer's left","Those from all directions"],a:1,w:"(c): right, front and behind stop; left may proceed (p 47)."},
+{l:"h",q:"Police signal (f) allows which vehicles to proceed?",o:["Vehicles from the officer's left","Vehicles from behind","Right-turning vehicles in front of the officer"],a:2,w:"(f): right-turning vehicles in front may proceed; all others stop (p 48)."},
+{l:"h",q:"Police signal (d): vehicles from the officer's left should:",o:["Be ready to stop, as the signal is about to change","Proceed","Turn right"],a:0,w:"(d): front and behind stop; right may proceed; left be ready to stop (p 48)."},
+{l:"h",q:"Which of these do police officers' signals NOT take precedence over?",o:["Traffic light signals","Nothing: they take precedence over signs, lights, markings and regulations","Road markings"],a:1,w:"p 47."},
+{l:"h",q:"Flashing amber traffic lights: who has priority at the junction?",o:["Traffic on your left","Whoever arrives first","Traffic on your right"],a:2,w:"Give way to traffic on the right (p 44)."},
+{l:"h",q:"A green 'B' light is shown. A car driver in the bus bay lane should:",o:["Wait, because it's for buses only","Go ahead of other traffic","Turn left"],a:0,w:"p 45."},
+{l:"h",q:"When the main light turns green, what must you still do before moving off?",o:["Sound the horn","Look right and left to make sure it is safe","Flash your headlights"],a:1,w:"p 44; also p 70: give way to vehicles beating the lights."},
+{l:"h",q:"Which statement about intelligent road studs is TRUE?",o:["They mark the stop line for buses","They mean you must stop for 3 seconds","They blink when the green man is on, to warn turning drivers about crossing pedestrians"],a:2,w:"p 46."}
+]});
+</script>
+
+<!-- ===== DAY 6 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:6,
+tips:[
+"<b>Keep left, overtake on the right</b>, with exactly four exceptions for overtaking on the left: (a) the car ahead is signalling right; (b) you are turning left at a junction; (c) slow queues where the lanes on your right are slower; (d) one-way streets, but <b>not</b> dual carriageways.",
+"<b>Five places you never overtake:</b> at or approaching a pedestrian crossing, a junction, a corner or bend, the brow of a hill, or double white lines.",
+"<b>The 12 overtaking steps:</b> check ahead → check behind → signal right → check blind spot → move right → accelerate → tap horn (if needed) → check mirror → signal left → move left → cancel signal → resume speed.",
+"<b>Three-lane carriageway:</b> the right lane is only for overtaking and emergency vehicles. Driving slowly in it is <b>road-hogging</b>.",
+"<b>Speed:</b> 50 km/h unless signed otherwise. Always the lower of the road limit and your vehicle's limit. Don't drive more than 15 km/h below the limit.",
+"<b>Today:</b> read pp 50–52. Say the 12 overtaking steps aloud twice; mock tests ask which step comes next."
+],
+qs:[
+{l:"e",q:"Unless a sign says otherwise, the speed limit on Singapore roads is:",o:["50 km/h","60 km/h","40 km/h"],a:0,w:"p 52."},
+{l:"e",q:"You should normally overtake on the:",o:["Left","Right","Either side"],a:1,w:"Always overtake on the right (p 50)."},
+{l:"e",q:"On a two-way street, you should keep:",o:["In the middle of the road","To the right","Well to the left, except when overtaking or turning right"],a:2,w:"Keep-left rule (p 50)."},
+{l:"e",q:"On a two-lane carriageway you should keep to:",o:["The left-hand lane, except when overtaking","The right-hand lane","Whichever lane is emptier"],a:0,w:"p 50."},
+{l:"e",q:"While another vehicle is overtaking you, you should:",o:["Speed up","Not increase your speed; slow down if necessary","Move to the right"],a:1,w:"p 50."},
+{l:"e",q:"In a traffic hold-up, 'jumping the queue' by squeezing between lanes is:",o:["Acceptable if you signal","Allowed for motorcycles only","Dangerous and should not be done"],a:2,w:"p 50."},
+{l:"e",q:"Before you reach a junction, you should:",o:["Get into the correct lane well before the junction","Change lanes at the stop line","Stay in the right lane"],a:0,w:"p 50."},
+{l:"e",q:"Driving at an unreasonably slow speed in the right lane is called:",o:["Tailgating","Road-hogging","Lane discipline"],a:1,w:"p 52."},
+{l:"e",q:"What must you always obey?",o:["Other drivers' hand waves","Your sat-nav","'Reduce Speed Now' signs"],a:2,w:"p 52."},
+{l:"e",q:"After overtaking, you should:",o:["Return to your lane when safe, without cutting in sharply","Stay in the right lane","Brake to let the other car pass again"],a:0,w:"p 50."},
+{l:"m",q:"On a three-lane carriageway, the right-hand lane is for:",o:["Slow vehicles","Overtaking and emergency vehicles only","Heavy vehicles"],a:1,w:"p 50."},
+{l:"m",q:"On a three-lane carriageway, when may you keep to the centre lane?",o:["Always","Never","When the left lane is occupied by slower vehicles"],a:2,w:"p 50."},
+{l:"m",q:"You may overtake on the left when:",o:["The driver in front has signalled to turn right","The car in front is slow on a dual carriageway","You are in a hurry"],a:0,w:"p 50 (a)."},
+{l:"m",q:"Which is NOT a place where overtaking is prohibited?",o:["Approaching a pedestrian crossing","On a straight, clear road with a broken centre line","At the brow of a hill"],a:1,w:"p 50."},
+{l:"m",q:"You must not cross the centre line:",o:["On a wide road","When turning right","At bends, near the crest of a rise, or wherever you can't see the road ahead clearly"],a:2,w:"p 50."},
+{l:"m",q:"In the 12-step overtaking method, what comes straight after 'signal right'?",o:["Check blind spot","Move right","Accelerate"],a:0,w:"p 51."},
+{l:"m",q:"In the 12-step overtaking method, what is step 1?",o:["Signal right","Check traffic ahead","Check mirror"],a:1,w:"p 51."},
+{l:"m",q:"Overtaking should NOT be attempted when:",o:["The road is straight","The car in front is in the left lane","The car in front is about to overtake the car ahead of it"],a:2,w:"p 50."},
+{l:"m",q:"Your car's speed limit is 60 km/h and the road's limit is 70 km/h. Your limit is:",o:["60 km/h","70 km/h","65 km/h"],a:0,w:"Whichever is the lesser (p 52)."},
+{l:"m",q:"A road is obstructed by parked vehicles and is narrow. May you cross the centre line?",o:["Never","Yes, after making sure your path is safe and clear","Only if you sound your horn"],a:1,w:"p 50."},
+{l:"h",q:"On a one-way street, overtaking on either side is allowed. Is the same true on a dual carriageway?",o:["Yes","Only at night","No, dual carriageways are excluded"],a:2,w:"p 50 (d)."},
+{l:"h",q:"Traffic is moving slowly in queues and the lanes on your right are slower than yours. Passing them on the left is:",o:["Allowed","An offence","Allowed only for buses"],a:0,w:"p 50 (c)."},
+{l:"h",q:"In the 12-step method, 'tap horn (if necessary)' comes right after:",o:["Move right","Accelerate","Check mirror"],a:1,w:"…5 move right, 6 accelerate, 7 tap horn… (p 51)."},
+{l:"h",q:"Which comes LAST in the 12 overtaking steps?",o:["Cancel signal","Move left","Resume normal speed"],a:2,w:"Step 12 = resume normal speed (p 51)."},
+{l:"h",q:"The car ahead moves from the left lane to the right lane to turn right. You should:",o:["Not overtake it","Overtake it on the right","Sound your horn and overtake"],a:0,w:"Overtaking is dangerous in this case (p 50)."},
+{l:"h",q:"Which TWO of these are reasons not to overtake? 1) the road narrows 2) it would force another vehicle to swerve 3) the road is dry",o:["1 and 3","1 and 2","2 and 3"],a:1,w:"Don't overtake where the road narrows, if it would force another vehicle to swerve or slow, or if in doubt (p 50)."},
+{l:"h",q:"Which vehicles does the handbook say should especially keep left because they travel slowly?",o:["Taxis","Ambulances","Small motorcycles, goods vehicles and lorries"],a:2,w:"p 52."},
+{l:"h",q:"When should you use the right-hand lane?",o:["Only to overtake, turn right or make a U-turn","Whenever it is empty","When driving at the speed limit"],a:0,w:"p 52."},
+{l:"h",q:"The speed limit is 70 km/h and you drive in the left lane at 50 km/h on a clear road. Per the handbook:",o:["That's fine; left lane is for slow traffic","That's too slow: don't drive below 15 km/h under the limit","You must use hazard lights"],a:1,w:"p 63: don't drive slowly at below 15 km/h of the limit."},
+{l:"h",q:"Overtaking is particularly risky at night and in heavy rain because:",o:["Roads are emptier","Engines work less well","It is harder to judge speed and distance"],a:2,w:"p 50."}
+]});
+</script>
+
+<!-- ===== DAY 7 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:7,
+tips:[
+"<b>Uncontrolled junction (no lights, no Stop or Give Way sign):</b> going straight or turning left = give way to traffic going straight from the <b>right</b>. Turning right = give way to straight-through traffic from all directions, right-turners from your right, and left-turners from the opposite direction.",
+"<b>Look right, left, then right again.</b> Never go just because someone who isn't authorised waves you on.",
+"<b>Turning right:</b> on a two-way road, position just left of the middle and turn into the lane just left of the centre line. On a one-way road, use the far-right lane and turn into the far-right lane.",
+"<b>Roundabouts:</b> give way to traffic on your <b>right</b>. <b>Expressways:</b> vehicles limited to 60 km/h or less use the left lane; no driving or stopping on the shoulder except in a breakdown, accident or emergency.",
+"<b>Yellow box:</b> blocking it is an offence even on green. There are three allowed cases: turning vehicles not blocking others, waiting to turn right because of oncoming traffic (finish the turn if the light goes red), and waiting because of pedestrians. <b>U-turns only where there's a U-turn sign.</b>",
+"<b>Today:</b> read pp 52–56. Draw the three yellow-box situations from memory."
+],
+qs:[
+{l:"e",q:"Approaching a junction with a major road, you should:",o:["Slow down and give way to traffic on the major road","Speed up to merge","Sound your horn"],a:0,w:"p 52."},
+{l:"e",q:"At a roundabout you give way to traffic:",o:["On your left","On your right","Behind you"],a:1,w:"p 53."},
+{l:"e",q:"At a junction, the correct order to look is:",o:["Left, right, left","Straight ahead only","Right, left, then right again"],a:2,w:"p 53."},
+{l:"e",q:"U-turns are allowed:",o:["Only where a U-turn sign is located","At any opening in a road divider","At any junction"],a:0,w:"p 56."},
+{l:"e",q:"Cycling, skating and walking on expressways are:",o:["Allowed on the shoulder","Prohibited","Allowed at night"],a:1,w:"p 54."},
+{l:"e",q:"You may drive or stop on an expressway shoulder:",o:["To make a phone call","To let passengers out","Only for a breakdown, accident or emergency"],a:2,w:"p 54."},
+{l:"e",q:"Entering a yellow box and causing an obstruction when your light is green is:",o:["An offence","Allowed","Allowed if you signal"],a:0,w:"p 54."},
+{l:"e",q:"When turning left, you should:",o:["Swing out to the right first","Keep left, signal in good time, and not swing out","Use the right lane"],a:1,w:"p 53."},
+{l:"e",q:"At a STOP sign at a junction, you must:",o:["Slow down","Sound your horn","Stop before the stop line"],a:2,w:"p 52."},
+{l:"e",q:"Should you move off at a junction because someone on the pavement waves you on?",o:["No, don't rely on signals from unauthorised persons","Yes, they can see better","Yes, if they're a pedestrian"],a:0,w:"p 53."},
+{l:"m",q:"At an uncontrolled junction, going straight, you give way to:",o:["Traffic from the left","Traffic going straight from the right","Nobody"],a:1,w:"p 52 (a)."},
+{l:"m",q:"At an uncontrolled junction, turning left, you give way to:",o:["Oncoming traffic","Traffic from the left","Traffic going straight from the right"],a:2,w:"p 52 (c)."},
+{l:"m",q:"Turning right INTO a two-way street, you turn into:",o:["The lane just left of the centre line","The far-left lane","Any free lane"],a:0,w:"p 53."},
+{l:"m",q:"Turning right INTO a one-way street, you turn into:",o:["The far-left lane","The far-right lane","The middle lane"],a:1,w:"p 53."},
+{l:"m",q:"Before turning right from a two-way street, you position your car:",o:["At the far-left kerb","On the centre line","Just left of the middle of the road"],a:2,w:"p 53."},
+{l:"m",q:"On an expressway, a vehicle with a speed limit of 60 km/h must use:",o:["The left-hand lane","The centre lane","Any lane"],a:0,w:"p 54."},
+{l:"m",q:"At a roundabout, traffic from lane A should exit at:",o:["Any exit","Exit A","The first exit"],a:1,w:"Lane A goes to A, B to B, C to C (p 53)."},
+{l:"m",q:"When your car turns, which wheel tends to cut closer to the kerb?",o:["The front offside wheel","The rear offside wheel","The rear nearside wheel"],a:2,w:"p 53: watch out for pedestrians, bicycles and motorcycles."},
+{l:"m",q:"When making a U-turn, watch especially for:",o:["Motorcycles turning together with you on your right","Pedestrians behind you","Buses in the bus lane"],a:0,w:"p 56."},
+{l:"m",q:"Which rule must you obey at a roundabout?",o:["The left-hand rule","The right-hand rule (give way to traffic from the right)","First come, first served"],a:1,w:"p 53."},
+{l:"h",q:"At an uncontrolled junction, you are turning right. Who do you give way to?",o:["Only oncoming traffic","Nobody, if you signal","Straight-through traffic from all directions, right-turners from your right, and left-turners from the opposite direction"],a:2,w:"p 52 (b)."},
+{l:"h",q:"You are waiting in a yellow box to turn right because of oncoming traffic, and the light turns red. You should:",o:["Complete your turn and clear the yellow box","Stay in the box","Reverse back behind the stop line"],a:0,w:"Situation two (p 55)."},
+{l:"h",q:"Which driver may enter the yellow box even though they can't exit immediately?",o:["A driver going straight with a blocked exit","A turning driver whose waiting position won't block other traffic","Any driver on a green light"],a:1,w:"Situation one (p 54)."},
+{l:"h",q:"You enter a yellow box to turn left but must wait for pedestrians crossing. Is this an offence?",o:["Yes, always","Only during peak hours","No, waiting for pedestrians is one of the allowed situations"],a:2,w:"Situation three (p 55)."},
+{l:"h",q:"There is an opening in the road divider but no U-turn sign. May you U-turn there?",o:["No","Yes, if clear","Yes, at night"],a:0,w:"p 56."},
+{l:"h",q:"Going straight across an uncontrolled junction, a car approaches from your LEFT going straight. Who gives way?",o:["You give way","The car from your left gives way to you (you are on its right)","Whoever is bigger"],a:1,w:"Straight-through traffic gives way to traffic from the right (p 52)."},
+{l:"h",q:"Turning right at an uncontrolled junction, an oncoming car is turning LEFT. Who has priority?",o:["You, because you signalled first","Neither; whoever goes first","The oncoming left-turning car"],a:2,w:"Turning right: give way to traffic turning left from the opposite direction (p 52)."},
+{l:"h",q:"Your car breaks down on an expressway. Can you stop on the shoulder?",o:["Yes, a breakdown is an allowed reason","No, never","Only with police permission"],a:0,w:"p 54."},
+{l:"h",q:"How should you plan your exit at a roundabout?",o:["Decide at the last moment","Decide early, give clear signals, and use your mirrors","Follow the car in front"],a:1,w:"p 53."},
+{l:"h",q:"In a yellow box, the drivers marked 'X' going straight with a blocked exit should:",o:["Enter and wait","Sound their horns","Wait behind the stop line"],a:2,w:"p 54: vehicles X would obstruct traffic and should wait at the stop line."}
+]});
+</script>
+
+<!-- ===== DAY 8 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:8,
+tips:[
+"<b>Review day.</b> These 30 questions mix Days 1–7, like the real test. Do them in one go, timed: about 1 minute each, so 30 minutes.",
+"<b>Under 27/30?</b> Go back to the day(s) your misses came from and redo that day's Hard questions.",
+"<b>The facts that cause the most mistakes:</b> X vs slash (no stopping vs no waiting); amber = stop; flashing amber = out of order (give way to the right); red arrow = no turn even if empty; the 4 overtake-on-the-left cases; the right-turn give-way rule; yellow box finish-the-turn rule.",
+"<b>Numbers from Days 1–7:</b> 4.5 m height; 20 m breakdown triangle; 9 m bus stop; 40 km/h Friendly Streets and School Zones; 50 km/h default; 60 km/h vehicles keep left on expressways; bus lane hours.",
+"<b>Exam technique:</b> read every word. 'Always', 'never', 'only' and 'unless' change the answer. If two answers look right, pick the handbook wording.",
+"<b>Also today:</b> do one full 50-question mock test in the myCDC app if you can."
+],
+qs:[
+{l:"e",s:"nostop",q:"What does this sign mean?",o:["No stopping","No waiting","No entry"],a:0,w:"X = No stopping (p 11)."},
+{l:"e",s:"giveway",q:"At this sign you must:",o:["Always stop","Slow down, stop if necessary, and give way to the major road","Speed up to merge"],a:1,w:"p 10."},
+{l:"e",s:"tjn",q:"This warning sign means:",o:["Road closed ahead","Turn right only","T junction: give way to traffic from the right and left"],a:2,w:"p 14."},
+{l:"e",q:"How far behind your vehicle should the breakdown triangle be placed?",o:["At least 20 m","5 m","50 m"],a:0,w:"pp 17, 56."},
+{l:"e",s:"lamber",q:"You are 50 m from the stop line when this light comes on. You should:",o:["Speed up to clear the junction","Stop at the stop line","Sound your horn and go"],a:1,w:"Amber = stop, unless you are so close you cannot stop safely (p 44)."},
+{l:"e",q:"The default speed limit in Singapore is:",o:["60 km/h","40 km/h","50 km/h"],a:2,w:"p 52."},
+{l:"e",q:"At a roundabout, give way to traffic on your:",o:["Right","Left","Rear"],a:0,w:"p 53."},
+{l:"e",s:"tred",q:"In a tunnel, this signal over your lane means:",o:["Lane open","Lane closed","Slow down"],a:1,w:"p 25."},
+{l:"e",q:"You want to U-turn at a junction with no U-turn sign, and the road is empty. You may:",o:["U-turn carefully","U-turn if you signal","Not U-turn there"],a:2,w:"U-turn only where a U-turn sign is located (p 56)."},
+{l:"e",q:"Which zone has a 40 km/h speed limit sign at its start?",o:["School Zone","Expressway","Work zone"],a:0,w:"School zone speed limit 40 km/h (p 18)."},
+{l:"m",s:"nowait",q:"Under this sign, you may:",o:["Wait up to 5 minutes","Stop only to let passengers board or alight","Load and unload goods"],a:1,w:"p 11."},
+{l:"m",s:"dzz",q:"These double yellow zig-zag lines mean:",o:["No parking 7am–7pm","Bus stop","No stopping at any time"],a:2,w:"p 38."},
+{l:"m",q:"No parking or stopping within ___ of a bus stop:",o:["9 m","6 m","3 m"],a:0,w:"p 21."},
+{l:"m",q:"Normal bus lane operating hours are:",o:["Mon–Sat 7:30am–11pm","Mon–Fri 7:30–9:30am and 5–8pm","Every day all day"],a:1,w:"p 40."},
+{l:"m",q:"Flashing amber traffic lights mean:",o:["Prepare to stop","Lights are about to turn green","Lights out of order: go with caution, give way to traffic on the right"],a:2,w:"p 44."},
+{l:"m",q:"On a three-lane carriageway, the right lane is for:",o:["Overtaking and emergency vehicles only","Slow vehicles","Buses"],a:0,w:"p 50."},
+{l:"m",q:"In the 12-step overtaking method, after 'check blind spot' you:",o:["Accelerate","Move right","Signal left"],a:1,w:"p 51."},
+{l:"m",q:"At an uncontrolled junction, you and a car on your RIGHT are both going straight. Who goes first?",o:["You","Whoever is faster","The car on your right"],a:2,w:"Going straight, give way to traffic going straight from the right (p 52)."},
+{l:"m",q:"On EMAS signs, lane 1 is:",o:["The fast (rightmost) lane","The slow lane","The shoulder"],a:0,w:"p 32."},
+{l:"m",q:"Vehicles with a speed limit of 60 km/h or less on expressways must:",o:["Use the right lane","Use the left lane","Use the shoulder"],a:1,w:"p 54."},
+{l:"h",s:"lredarrow",q:"This red arrow is lit and the opposite lanes are empty. You may:",o:["Turn right carefully","Turn after 3 seconds","Not turn right; stop behind the line"],a:2,w:"p 45."},
+{l:"h",q:"Which is NOT one of the cases where you may overtake on the left?",o:["On a dual carriageway","The car ahead signals right","You are turning left at a junction"],a:0,w:"p 50: one-way streets yes, dual carriageways no."},
+{l:"h",q:"Waiting in a yellow box to turn right, the light turns red. You should:",o:["Stay put","Complete the turn and clear the box","Reverse out"],a:1,w:"p 55."},
+{l:"h",q:"A lorry is 4.6 m tall. To drive it on public roads it needs:",o:["Hazard lights","A permit from LTA only","A police escort"],a:2,w:"p 58: over 4.5 m without police escort is an offence."},
+{l:"h",q:"A goods vehicle's speed-limit plate shows 60, and the road limit is 70. Its maximum speed is:",o:["60 km/h","70 km/h","65 km/h"],a:0,w:"pp 34, 52."},
+{l:"h",q:"A green arrow is flickering. You've already crossed the stop line. You should:",o:["Stop in the junction","Complete the manoeuvre safely","Reverse"],a:1,w:"Don't proceed only if you HAVEN'T crossed the stop line (p 44)."},
+{l:"h",q:"Double white lines in the centre: which is allowed?",o:["U-turn","Right turn into a side road","Overtaking while staying entirely left of the lines"],a:2,w:"p 37."},
+{l:"h",q:"A 'One-way traffic' sign at a junction allows you to:",o:["Turn right or left","Turn left only","Go straight only"],a:0,w:"p 20."},
+{l:"h",q:"Turning right at an uncontrolled junction, which of these do you NOT need to give way to?",o:["Oncoming traffic going straight","Traffic behind you","Oncoming traffic turning left"],a:1,w:"p 52."},
+{l:"h",q:"It's Sunday at 10am. Can you park on a single unbroken yellow line?",o:["No, never","Only for 15 minutes","Yes, the 7am–7pm restriction doesn't apply on Sundays and public holidays"],a:2,w:"p 38."}
+]});
+</script>
+
+<!-- ===== DAY 9 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:9,
+tips:[
+"<b>3 – 6 – 9:</b> no parking within <b>3 m</b> either side of a fire hydrant, <b>6 m</b> of a junction, <b>9 m</b> of a bus stop.",
+"<b>Parking on a slope:</b> facing downhill = <b>reverse gear</b>; facing uphill = <b>low gear</b>. Then engine off, handbrake on, key out.",
+"<b>Lights:</b> headlights on <b>7pm–7am</b>; dipped in built-up areas, in rain and when following or facing traffic; high beam on unlit roads (dip for others); if dazzled, look slightly <b>left</b>.",
+"<b>Alcohol (handbook):</b> 80 mg per 100 ml of blood / 35 µg per 100 ml of breath. You can be charged below the limit if you can't control the car. First offence: $2,000–$10,000 and/or up to 12 months' jail.",
+"<b>Phone offence = all 3 conditions:</b> holding it in at least one hand + using any function + the vehicle is moving. Hands-free is fine if you're not holding it. Penalty: up to $1,000 and/or 6 months, and likely disqualification.",
+"<b>Today:</b> read pp 56–59. These pages are full of numbers, so make flashcards from the tips above."
+],
+qs:[
+{l:"e",q:"You must drive with headlights on between:",o:["7pm and 7am","6pm and 6am","8pm and 6am"],a:0,w:"p 57."},
+{l:"e",q:"Who in a vehicle must wear a seat belt?",o:["Only the driver","All persons, irrespective of age","Only front-seat passengers"],a:1,w:"p 57."},
+{l:"e",q:"The safe rule about drinking is:",o:["One drink is always fine","Drink only with food","If you drink, don't drive"],a:2,w:"p 58."},
+{l:"e",q:"Before opening a car door, you should:",o:["Make sure it won't endanger or inconvenience anyone","Sound the horn","Turn on hazard lights"],a:0,w:"p 56: get out on the kerb side where possible."},
+{l:"e",q:"In the daytime when it is raining or visibility is poor, you should:",o:["Use hazard lights while driving","Switch on your headlights","Use high beam"],a:1,w:"p 58."},
+{l:"e",q:"Is parking allowed in a bus lane?",o:["Yes, outside bus hours only","Yes, for 5 minutes","No, do not park or wait in any bus lane"],a:2,w:"p 56."},
+{l:"e",q:"After parking, you should:",o:["Turn off the engine, engage the handbrake and remove the key","Leave the engine running","Leave the windows open"],a:0,w:"p 56."},
+{l:"e",q:"Driving with the interior lights on is:",o:["Recommended at night","Unsafe, because it reduces your view outside","Required in tunnels"],a:1,w:"p 58."},
+{l:"e",q:"When driving behind another vehicle at night, you should:",o:["Use high beam","Switch off your headlights","Dip your headlights"],a:2,w:"p 57."},
+{l:"e",q:"On an unlit road at night, you should normally use:",o:["High beam, dipping for other vehicles and cyclists","Parking lights only","Fog lights only"],a:0,w:"p 57."},
+{l:"m",q:"No parking within ___ of a road junction:",o:["3 m","6 m","9 m"],a:1,w:"6 metres (20 feet) (p 56)."},
+{l:"m",q:"No parking within ___ of a fire hydrant:",o:["9 m","6 m","3 m on either side"],a:2,w:"p 56."},
+{l:"m",q:"Parking facing downhill, put the car in:",o:["Reverse gear","First gear","Neutral"],a:0,w:"Reverse if downhill; low gear if uphill (p 56)."},
+{l:"m",q:"If your car breaks down, you should:",o:["Leave it and come back tomorrow","Move it to a breakdown bay or the roadside, use hazard lights and place the triangle at least 20 m behind","Switch off all lights"],a:1,w:"p 56."},
+{l:"m",q:"Adults below what height must use a booster seat or approved adjustable seat belt?",o:["1.20 m","1.50 m","1.35 m"],a:2,w:"p 57."},
+{l:"m",q:"If you are dazzled by another vehicle's lights at night, you should:",o:["Slow down, and stop if necessary","Flash your high beam back","Speed up past them"],a:0,w:"p 57."},
+{l:"m",q:"To avoid being dazzled by oncoming headlights, look:",o:["Directly at them","Slightly to the left","Slightly to the right"],a:1,w:"p 58."},
+{l:"m",q:"The legal breath alcohol limit (per the handbook) is:",o:["80 µg per 100 ml of breath","50 µg per 100 ml of breath","35 µg per 100 ml of breath"],a:2,w:"p 58. Blood limit: 80 mg per 100 ml."},
+{l:"m",q:"Workers seated on a lorry deck must not be taller than ___ measured from the deck:",o:["1.1 m","1.5 m","0.9 m"],a:0,w:"p 58."},
+{l:"m",q:"A vehicle taller than 4.5 m may only be driven:",o:["At night","With a police escort","On expressways"],a:1,w:"p 58."},
+{l:"h",q:"Which of these is the mobile-phone offence?",o:["Using a hands-free headset while moving","Glancing at a mounted phone while stopped in a car park","Holding the phone and pressing a button to answer while the car is moving"],a:2,w:"All 3 conditions: holding, using any function, vehicle in motion (p 59)."},
+{l:"h",q:"You're holding your phone and talking hands-free through a headset while driving. Is it an offence?",o:["Yes, because you're holding the device while the vehicle is moving","No, hands-free is always fine","Only if you're texting"],a:0,w:"Hands-free is acceptable unless the driver is holding the device (p 59)."},
+{l:"h",q:"Your breath alcohol is below 35 µg, but you can't control the car properly. You:",o:["Can't be charged","Can still be charged with drink driving","Only get a warning"],a:1,w:"p 58."},
+{l:"h",q:"The penalty for a first drink-driving offence is a fine of:",o:["$500–$1,000","$1,000–$5,000","$2,000–$10,000 and/or up to 12 months' jail"],a:2,w:"p 58. Repeat: $5,000–$20,000 and up to 2 years."},
+{l:"h",q:"The penalty for using a mobile phone while driving is:",o:["Up to $1,000 and/or 6 months' jail, with likely disqualification","$150 and 3 points","A warning letter"],a:0,w:"Charged in court (p 59)."},
+{l:"h",q:"How much deck space must each seated worker on a lorry have?",o:["0.5 m²","0.372 m² (4 sq ft)","1 m²"],a:1,w:"p 58."},
+{l:"h",q:"A lorry carrying workers on its deck, on a road signed 70 km/h, must not exceed:",o:["70 km/h","80 km/h","60 km/h"],a:2,w:"Road limit or 60 km/h, whichever is lower (p 58)."},
+{l:"h",q:"'Parking' in the handbook means:",o:["Stopping and waiting, other than to immediately pick up or drop off passengers","Any stop for more than 10 minutes","Switching off the engine"],a:0,w:"p 56 note."},
+{l:"h",q:"Which of these is NOT listed as a place where you must not park?",o:["On a bridge","In a marked parking lot","Abreast of another vehicle"],a:1,w:"p 56 list."},
+{l:"h",q:"Approaching a curve or intersection with poor visibility at night, the handbook suggests you:",o:["Switch off your lights","Use hazard lights","Flash your headlights to warn others you're coming"],a:2,w:"p 58."}
+]});
+</script>
+
+<!-- ===== DAY 10 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:10,
+tips:[
+"<b>Three-second rule</b> (it used to be two seconds): when the car ahead passes a fixed object, count 'one-thousand-and-one, one-thousand-and-two, one-thousand-and-three'. It applies to all vehicles at any speed.",
+"<b>Stopping distance = reaction distance + braking distance.</b> Braking distance is longer on wet roads, with worn tyres or a full load; reaction time is longer when you're tired or have been drinking.",
+"<b>Timing numbers:</b> signal at least <b>3 s</b> before you act; check mirrors every <b>5–10 s</b>.",
+"<b>Gaps:</b> pedestrian facing traffic <b>1 m</b>; pedestrian with their back to traffic <b>1.5 m</b>; cyclist <b>1.5 m</b>.",
+"<b>Emergency vehicles:</b> pull to the nearest edge and stop if needed. Never block a junction, follow closely, stop on a bridge, bend or hill crest, or brake hard in front of one.",
+"<b>Today:</b> read pp 60–64. Many questions here are about manners and safety, so pick the most cautious answer."
+],
+qs:[
+{l:"e",q:"The handbook's safe following distance rule is the:",o:["Three-second rule","Two-second rule","One-car-length rule"],a:0,w:"p 61."},
+{l:"e",q:"Before moving off, you should:",o:["Sound the horn","Fasten your seat belt, check mirrors, signal, and look around","Accelerate quickly"],a:1,w:"p 60."},
+{l:"e",q:"Who has the right of way at pedestrian crossings?",o:["Vehicles","Whoever arrives first","Pedestrians"],a:2,w:"p 62."},
+{l:"e",q:"Tailgating means:",o:["Following too closely behind another vehicle","Driving in the right lane","Overtaking on the left"],a:0,w:"p 60."},
+{l:"e",q:"Areas beside your car you can't see in your mirrors are called:",o:["Dead zones","Blind spots","Side lanes"],a:1,w:"p 60."},
+{l:"e",q:"A school patrol warden shows a 'STOP–Children' sign. You must:",o:["Slow down","Sound your horn","Stop"],a:2,w:"p 62."},
+{l:"e",q:"When should you use your horn?",o:["Only to warn others of danger","To show frustration","To ask for right of way"],a:0,w:"p 63."},
+{l:"e",q:"Driving through a puddle near pedestrians, you should:",o:["Speed up","Slow down to avoid splashing them","Sound the horn"],a:1,w:"p 62."},
+{l:"e",q:"When a cyclist is ahead and you want to turn, you should:",o:["Overtake and cut in front","Sound your horn","Turn behind the cyclist"],a:2,w:"p 64."},
+{l:"e",q:"Before opening your car door, check for:",o:["Cyclists","Parking wardens","Buses"],a:0,w:"p 64."},
+{l:"m",q:"How far in advance should you signal before a manoeuvre?",o:["1 second","At least 3 seconds","10 seconds"],a:1,w:"p 60."},
+{l:"m",q:"While driving along, check your mirrors every:",o:["30 seconds","Only when turning","5 to 10 seconds"],a:2,w:"p 60."},
+{l:"m",q:"Stopping distance is approximately:",o:["Reaction distance + braking distance","Braking distance only","Twice the car's length"],a:0,w:"p 61."},
+{l:"m",q:"Gap to leave when passing a pedestrian who is facing traffic:",o:["0.5 m","At least 1 m","At least 2 m"],a:1,w:"p 62."},
+{l:"m",q:"Gap to leave when passing a cyclist (where practicable):",o:["1 m","0.5 m","1.5 m"],a:2,w:"p 62."},
+{l:"m",q:"When stationary at a road junction with a cyclist nearby, you should:",o:["Stop behind the cyclist","Stop beside the cyclist","Overtake before the line"],a:0,w:"p 62."},
+{l:"m",q:"Approaching a pedestrian crossing, you should:",o:["Overtake slower cars before it","Slow down and not overtake","Speed up to clear it"],a:1,w:"p 62."},
+{l:"m",q:"Reversing from a side road into a main road is:",o:["Allowed if clear","Allowed at night","Not allowed"],a:2,w:"p 62."},
+{l:"m",q:"An ambulance with sirens approaches. You should:",o:["Pull to the nearest edge and stop if necessary","Speed up ahead of it","Stop immediately where you are"],a:0,w:"p 62."},
+{l:"m",q:"In a traffic queue near a side road, you should:",o:["Close the gap","Leave a gap so vehicles can turn in and out","Sound your horn"],a:1,w:"p 63."},
+{l:"h",q:"Gap to leave when passing a pedestrian whose back is to traffic:",o:["1 m","0.5 m","At least 1.5 m"],a:2,w:"p 62."},
+{l:"h",q:"Which makes BRAKING distance longer?",o:["A wet road, worn tyres or a fully loaded car","Being tired","Drinking alcohol"],a:0,w:"Tiredness and alcohol increase REACTION time (p 61)."},
+{l:"h",q:"Which makes REACTION time longer?",o:["Worn tyres","Being tired or having drunk alcohol","A wet road"],a:1,w:"p 61."},
+{l:"h",q:"You're giving way to an emergency vehicle on a bridge. You should:",o:["Stop on the bridge","Brake hard","Signal and keep going until you can safely pull over"],a:2,w:"p 62: don't stop on a bridge, curve or hill crest."},
+{l:"h",q:"Pulling over for an emergency vehicle, should you block an intersection to let it pass?",o:["No, never block an intersection","Yes, if it helps","Only if the light is red"],a:0,w:"p 62."},
+{l:"h",q:"Your light turns green but pedestrians are still crossing. You:",o:["May proceed: your signal allows it","Must give way to the pedestrians still crossing","Sound your horn to hurry them"],a:1,w:"p 62."},
+{l:"h",q:"Even when driving in the left lane, you should not drive slower than:",o:["The car behind you","30 km/h","15 km/h below the speed limit"],a:2,w:"p 63."},
+{l:"h",q:"Flashing your headlights or blasting the horn at a slower car in front is:",o:["Rude, and should not be done","A good way to warn them","Required on expressways"],a:0,w:"p 64."},
+{l:"h",q:"You switch on your direction signal when pulling over for an emergency vehicle because:",o:["It's required for the camera","It tells the emergency driver that you're aware of them","It turns off the siren"],a:1,w:"p 62."},
+{l:"h",q:"Why should you not expect cyclists to ride right next to the kerb?",o:["They prefer the centre of the road","Kerbs are illegal for cyclists","Their pedals may hit the kerb and drain holes can trap their tyres"],a:2,w:"p 64."}
+]});
+</script>
+
+<!-- ===== DAY 11 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:11,
+tips:[
+"<b>Five adverse conditions:</b> driver, weather, light, road and traffic. Questions usually describe one and ask for the right reaction.",
+"<b>Skid vs locked wheels:</b> a rear-wheel skid = foot off the accelerator, <b>never brake</b>, steer in the direction of the skid. Locked wheels or aquaplaning = <b>brake on and off</b> (intermittent braking).",
+"<b>Water:</b> on wet roads stopping distance is about <b>2x</b>. After a flood, pump the brakes to dry them. If a flood is passable, go through in a <b>lower gear</b>.",
+"<b>At traffic lights:</b> leave a <b>2 m</b> gap to the car in front; wait <b>2 s</b> after it moves off; give way to vehicles running the light.",
+"<b>Car numbers:</b> replace tyres with less than <b>1.6 mm</b> of tread; high beam reaches about <b>100 m</b>; <b>80%</b> of driving information comes through your eyes; move your eyes about every <b>2 s</b>.",
+"<b>Today:</b> read pp 65–72, including the dashboard and controls diagram on p 72."
+],
+qs:[
+{l:"e",q:"About how much of the information you use when driving comes through your eyes?",o:["80%","50%","95%"],a:0,w:"p 65."},
+{l:"e",q:"In heavy rain you should:",o:["Turn off your headlights","Reduce speed and switch on your headlights","Use hazard lights while driving"],a:1,w:"p 65."},
+{l:"e",q:"If you feel tired or unwell, you should:",o:["Drive faster to get home sooner","Open the window and continue","Not drive"],a:2,w:"p 65."},
+{l:"e",q:"In very bright sunlight, you should:",o:["Wear sunglasses or lower the sun visor","Switch on your headlights","Drive faster"],a:0,w:"p 66."},
+{l:"e",q:"If you can't see clearly in bad weather, you should:",o:["Keep going at the same speed","Stop at a safe spot with your hazard lights on until it improves","Follow the car in front closely"],a:1,w:"p 65."},
+{l:"e",q:"Tyres should be replaced when the tread depth is less than:",o:["3 mm","0.5 mm","1.6 mm"],a:2,w:"p 70."},
+{l:"e",q:"Check engine coolant only when:",o:["The engine is cool","The engine is hot","The car is moving"],a:0,w:"Hot coolant is under pressure (p 70)."},
+{l:"e",q:"The engine oil level is checked with the:",o:["Fuel gauge","Dip-stick","Tachometer"],a:1,w:"p 70."},
+{l:"e",q:"At traffic lights, the gap to leave behind the car in front is:",o:["0.5 m","5 m","2 m"],a:2,w:"p 70."},
+{l:"e",q:"On open highways in strong winds, you should:",o:["Slow down and drive cautiously","Speed up to get through","Change lanes often"],a:0,w:"p 66."},
+{l:"m",q:"Compared with a dry road, stopping distance on a wet road is about:",o:["The same","Twice as long","Half as long"],a:1,w:"p 65."},
+{l:"m",q:"Aquaplaning means:",o:["Driving through a flood","Wipers stopping in rain","The car gliding on a layer of water, losing steering and braking"],a:2,w:"p 66."},
+{l:"m",q:"To regain control when aquaplaning, you should:",o:["Slow down using intermittent (on/off) braking","Brake hard","Accelerate"],a:0,w:"p 66."},
+{l:"m",q:"Driving through a road that is flooded but passable, you should:",o:["Use a high gear and speed","Engage a lower gear","Switch off the engine"],a:1,w:"p 66."},
+{l:"m",q:"After driving through water, your brakes may not work well. You should:",o:["Drive faster to dry them","Wait 10 minutes","Pump the brake pedal repeatedly until braking returns"],a:2,w:"p 66."},
+{l:"m",q:"How often should you move your eyes while driving?",o:["About every 2 seconds","Every 10 seconds","Only at junctions"],a:0,w:"p 65."},
+{l:"m",q:"As your speed increases, your field of vision:",o:["Widens","Narrows","Stays the same"],a:1,w:"p 65."},
+{l:"m",q:"When moving off at a green light, you should wait ___ after the car in front moves:",o:["Not at all","5 seconds","2 seconds"],a:2,w:"p 70."},
+{l:"m",q:"The average reach of headlights on high beam is about:",o:["100 m","50 m","200 m"],a:0,w:"p 68."},
+{l:"m",q:"Which instrument shows engine speed?",o:["Speedometer","Tachometer","Odometer"],a:1,w:"p 72."},
+{l:"h",q:"The rear of your car skids sideways. You should:",o:["Brake hard","Steer the opposite way","Take your foot off the accelerator, not brake, and steer in the direction of the skid"],a:2,w:"p 68."},
+{l:"h",q:"You lock the wheels braking hard on a wet road. You should:",o:["Release the brake and use on/off braking","Keep pressing harder","Turn the steering sharply"],a:0,w:"p 65."},
+{l:"h",q:"Another way to dry your brakes after a flood is to:",o:["Use the handbrake while moving","Gently press the brake with your left foot while pressing the accelerator with your right","Drive in reverse"],a:1,w:"p 66."},
+{l:"h",q:"On sandy or pebbled surfaces you should avoid:",o:["Low gears","Using headlights","Hard acceleration, hard braking and sharp steering"],a:2,w:"Risk of side slipping (p 68)."},
+{l:"h",q:"Centrifugal force on a bend gets stronger when:",o:["You go faster or the bend is sharper","You go slower","The road is wider"],a:0,w:"p 69."},
+{l:"h",q:"While waiting at a red light, which of these is a DON'T?",o:["Applying the handbrake","Inching forward or revving the engine","Staying alert"],a:1,w:"p 70."},
+{l:"h",q:"Your light turns green but a car is still running the red light across the junction. You should:",o:["Go, since you have priority","Sound your horn and go","Give way to the vehicle beating the lights"],a:2,w:"p 70."},
+{l:"h",q:"The battery water is low. You should top it up with:",o:["Distilled or battery water","Tap water","Coolant"],a:0,w:"Tap water shortens battery life (p 71)."},
+{l:"h",q:"An exhaust leak into the cabin is dangerous because of:",o:["Noise only","Carbon monoxide poisoning","Higher fuel use"],a:1,w:"p 71."},
+{l:"h",q:"Flood water at night: what does the handbook advise?",o:["Drive through quickly","Use high beam to see the bottom","Depth can be deceptive; if in doubt, take another route"],a:2,w:"p 66."}
+]});
+</script>
+
+<!-- ===== DAY 12 ===== -->
+<script>
+(window.BTT_DAYS=window.BTT_DAYS||[]).push({day:12,
+tips:[
+"<b>Work zones:</b> orange signs; <b>diamond = warning, rectangle = information</b>. Obey temporary speed limits; never overtake the queue or drive through coned-off areas; keep clear of Truck Mounted Attenuators (TMAs).",
+"<b>Special zones:</b> Friendly Streets and School Zones = max 40 km/h. Offences in School/Silver Zones (since 1 Jul 2021) and Friendly Streets (since 1 Jan 2026) carry <b>+2 demerit points and +$100</b> on the fine (fine capped at $500).",
+"<b>Tunnel do's:</b> plan your route, headlights on, radio on, follow signs, heavy vehicles keep left, stay in lane, have ERP payment ready.",
+"<b>Tunnel don'ts:</b> no stopping (except an accident, breakdown or emergency), no U-turns or reversing, no getting out, no horn, no tyre changes, refuelling or repairs, no <b>overtaking</b>, tailgating or speeding.",
+"<b>Banned from tunnels:</b> height 4.5 m or more, width over 3 m, length over 13 m, vehicles limited to 40 km/h or less, not enough fuel, hazardous goods, container trailers, diesel tankers. <b>AVs on trial</b> show a blinking yellow beacon.",
+"<b>Today:</b> read pp 73–79. Tomorrow is mocks only, so finish strong."
+],
+qs:[
+{l:"e",q:"Work zone signs have a:",o:["Black symbol on an orange background","Red border on white","Blue background"],a:0,w:"p 73."},
+{l:"e",q:"When entering a road tunnel, you should:",o:["Switch off the radio","Turn on your headlights and radio","Use hazard lights"],a:1,w:"p 76."},
+{l:"e",q:"In a School Zone, you should:",o:["Use the horn to warn children","Speed up to get through","Slow down and watch for children who may be hidden by their height"],a:2,w:"p 76."},
+{l:"e",q:"Overtaking inside a road tunnel is:",o:["Not allowed","Allowed on the right","Allowed if the lane is clear"],a:0,w:"Tunnel-specific rule (p 77)."},
+{l:"e",q:"Silver Zones are designed mainly to protect:",o:["Cyclists","Senior pedestrians","Bus passengers"],a:1,w:"p 76."},
+{l:"e",q:"At a work zone, you must not exceed:",o:["The normal road limit","50 km/h","Any temporary maximum speed limit posted"],a:2,w:"p 73."},
+{l:"e",q:"In a tunnel, heavy vehicles should:",o:["Keep left","Use the right lane","Use any lane"],a:0,w:"p 76."},
+{l:"e",q:"Starting a Friendly Street, you see a gateway sign. Your speed should be no more than:",o:["30 km/h","40 km/h","50 km/h"],a:1,w:"pp 18, 75."},
+{l:"e",q:"An autonomous vehicle on trial can be recognised by:",o:["A flashing blue light","A green number plate","Its permit, decals and a blinking yellow beacon in autonomous mode"],a:2,w:"p 78."},
+{l:"e",q:"Around an autonomous vehicle, you should:",o:["Drive safely as normal: no tailgating, safe distance, overtake only if necessary","Follow it closely to watch it","Sound your horn to warn it"],a:0,w:"p 78."},
+{l:"m",s:"wz",q:"A diamond-shaped orange work zone sign is used for:",o:["Information","Warnings","Speed limits"],a:1,w:"Diamond = warning; rectangular = information (p 73)."},
+{l:"m",q:"In a work zone, you may:",o:["Switch lanes to get past queuing traffic","Drive through a coned area if empty","Get into the correct lane in good time"],a:2,w:"p 73."},
+{l:"m",q:"Truck Mounted Attenuators (TMAs) are:",o:["Safety vehicles acting as mobile barriers between traffic and the work area","Tow trucks","Police vehicles"],a:0,w:"p 74: be patient and keep clear."},
+{l:"m",q:"In a tunnel, you may stop your vehicle only:",o:["To make a phone call","In an accident, breakdown or emergency, or when lawfully required","To let passengers out"],a:1,w:"p 77."},
+{l:"m",q:"In a tunnel, using the horn is:",o:["Encouraged for safety","Allowed to warn slow drivers","Not allowed, except in an emergency"],a:2,w:"p 77."},
+{l:"m",q:"Changing a tyre inside a road tunnel is:",o:["Prohibited","Allowed in the left lane","Allowed with hazard lights on"],a:0,w:"p 77."},
+{l:"m",q:"A vehicle with an overall height of 4.5 m or above is:",o:["Allowed in tunnels at night","Prohibited in tunnels","Allowed with hazard lights"],a:1,w:"p 77."},
+{l:"m",q:"Friendly Streets are found near:",o:["Expressways","Industrial estates","Markets, hawker centres, schools and MRT stations"],a:2,w:"p 75."},
+{l:"m",q:"A red-textured road surface near a school gate tells you to:",o:["Drive carefully and look out for children crossing","Park here","Use the bus lane"],a:0,w:"pp 39, 75."},
+{l:"m",q:"In a Silver Zone, 2-stage crossings let pedestrians:",o:["Cross faster","Rest at the centre divider before crossing the rest","Cross only when cars stop"],a:1,w:"p 76."},
+{l:"h",q:"Offences in School or Silver Zones carry what extra penalty?",o:["Double the fine","Immediate licence suspension","+2 demerit points and +$100 on the composition fine (total fine capped at $500)"],a:2,w:"p 76 (since 1 Jul 2021)."},
+{l:"h",q:"From what date do Friendly Streets carry the same enhanced penalties as Silver and School Zones?",o:["1 January 2026","1 July 2021","1 March 1983"],a:0,w:"p 75."},
+{l:"h",q:"Which vehicle is prohibited in road tunnels?",o:["A 4.2 m tall bus","A vehicle with a speed limit of 40 km/h","A taxi"],a:1,w:"Vehicles limited to 40 km/h and below are prohibited (p 77)."},
+{l:"h",q:"Which of these may NOT enter a road tunnel?",o:["A 12 m long coach","A 2.5 m wide lorry","A vehicle longer than 13 m"],a:2,w:"Over 13 m long, over 3 m wide, 4.5 m tall or more (p 77)."},
+{l:"h",q:"A car with almost no fuel left wants to use a road tunnel. It is:",o:["Prohibited: vehicles without sufficient fuel are banned","Allowed","Allowed in the left lane"],a:0,w:"p 77."},
+{l:"h",q:"Which of these is NOT a tunnel 'do'?",o:["Plan your route in advance","Change lanes freely to overtake","Have ERP payment ready"],a:1,w:"Stay in lane; do not overtake (pp 76–77)."},
+{l:"h",q:"Which load is banned from tunnels?",o:["A properly covered load of sand","Secured furniture","A tanker carrying diesel fuel"],a:2,w:"p 77."},
+{l:"h",q:"A 'lateral shift marker' at a work zone tells you:",o:["The road shifts sideways or there's a sharp bend in the diversion","The work zone has ended","Pedestrians are crossing"],a:0,w:"p 73."},
+{l:"h",q:"Overtaking an autonomous vehicle on trial is:",o:["Never allowed","Allowed only if necessary and safe, leaving a safe gap","Allowed on the left only"],a:1,w:"p 78."},
+{l:"h",q:"In a tunnel, you're stuck behind a slow lorry. You should:",o:["Overtake when the next lane is clear","Flash and sound your horn","Stay in your lane at a safe distance: no overtaking, tailgating or horn"],a:2,w:"p 77."}
+]});
+</script>
+
+<script>
+/* BTT Practice Test — quiz engine (single-file version, hosted on GitHub Pages). */
+(function(){
+var PLAN=[[1,"Thu 20 Nov","Mandatory & prohibitory signs","9–13"],[2,"Fri 21 Nov","Warning & regulatory signs","14–20"],[3,"Sat 22 Nov","Information, tunnel, cycle, directional & EMAS signs","21–34"],[4,"Sun 23 Nov","Road markings, bus lanes & arrows","35–43"],[5,"Mon 24 Nov","Traffic lights, police & hand signals","44–49"],[6,"Tue 25 Nov","Keep left, lanes, overtaking & speed","50–52"],[7,"Wed 26 Nov","Junctions, roundabouts, expressways, yellow box, U-turns","52–56"],[8,"Thu 27 Nov","Review: mixed questions from Days 1–7","9–56"],[9,"Fri 28 Nov","Parking, seat belts, lights, alcohol & phones","56–59"],[10,"Sat 29 Nov","Code of conduct, following distance & pedestrians","60–64"],[11,"Sun 30 Nov","Defensive driving, weather, skids & roadworthiness","65–72"],[12,"Mon 1 Dec","Work zones, special zones, tunnels & AVs","73–79"]];
+var PDF="https://www.police.gov.sg/-/media/SPF/Knowledge-Hub/Traffic/BT-ENG-24126.pdf";
+window.BTT_DAYS=window.BTT_DAYS||[];
+var DATA={};
+function absorb(){window.BTT_DAYS.forEach(function(d){DATA[d.day]=d})}
+absorb();
+/* tell a parent page (Webflow iframe) how tall we are, so it can size the frame */
+function tellHeight(){try{parent.postMessage({bttHeight:document.documentElement.scrollHeight},"*")}catch(e){}}
+var KEY="btt-web-v1",st={};try{st=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){st={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
+var cur=1,lvl="all";
+function E(t,a,c){var e=document.createElement(t);if(a)for(var k in a){if(k==="text")e.textContent=a[k];else if(k==="html")e.innerHTML=a[k];else e.setAttribute(k,a[k])}(c||[]).forEach(function(x){if(x)e.appendChild(typeof x==="string"?document.createTextNode(x):x)});return e}
+
+/* ---------- simple drawn signs (generic shapes, not reproductions) ---------- */
+var RED="#C8102E",BLU="#1F5AA6",INK="#111";
+function ring(inner){return '<circle cx="50" cy="50" r="44" fill="#fff" stroke="'+RED+'" stroke-width="10"/>'+inner}
+function blue(inner){return '<circle cx="50" cy="50" r="46" fill="'+BLU+'"/>'+inner}
+function warn(inner){return '<polygon points="50,6 95,88 5,88" fill="#fff" stroke="'+RED+'" stroke-width="8" stroke-linejoin="round"/>'+inner}
+var AR='fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"';
+function bk(w){return 'fill="none" stroke="'+INK+'" stroke-width="'+(w||6)+'" stroke-linecap="round" stroke-linejoin="round"'}
+function txt(x,y,s,t,c){return '<text x="'+x+'" y="'+y+'" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="'+s+'" fill="'+(c||INK)+'">'+t+'</text>'}
+var SIGNS={
+stop:'<polygon points="30,4 70,4 96,30 96,70 70,96 30,96 4,70 4,30" fill="'+RED+'" stroke="#fff" stroke-width="3"/>'+txt(50,60,26,"STOP","#fff"),
+giveway:'<polygon points="6,10 94,10 50,92" fill="#fff" stroke="'+RED+'" stroke-width="9" stroke-linejoin="round"/>',
+noentry:'<circle cx="50" cy="50" r="46" fill="'+RED+'"/><rect x="18" y="41" width="64" height="18" fill="#fff"/>',
+nostop:'<circle cx="50" cy="50" r="42" fill="'+BLU+'" stroke="'+RED+'" stroke-width="9"/><path d="M22 22 L78 78 M78 22 L22 78" stroke="'+RED+'" stroke-width="9"/>',
+nowait:'<circle cx="50" cy="50" r="42" fill="'+BLU+'" stroke="'+RED+'" stroke-width="9"/><path d="M22 22 L78 78" stroke="'+RED+'" stroke-width="9"/>',
+left:blue('<path d="M72 50 H30 M44 34 L28 50 L44 66" '+AR+'/>'),
+ahead:blue('<path d="M50 78 V28 M34 44 L50 28 L66 44" '+AR+'/>'),
+keepleft:blue('<path d="M68 32 L34 66 M34 44 V66 H56" '+AR+'/>'),
+split:blue('<path d="M50 80 V56 M50 56 L30 34 M50 56 L70 34 M30 46 V34 H42 M70 46 V34 H58" '+AR+'/>'),
+noright:ring('<path d="M34 72 V46 H64 M54 36 L66 46 L54 56" fill="none" stroke="'+INK+'" stroke-width="7" stroke-linejoin="round"/><path d="M20 20 L80 80" stroke="'+RED+'" stroke-width="8"/>'),
+speed50:ring(txt(50,63,34,"50")),
+height:ring(txt(50,58,20,"4.5m")+'<path d="M50 18 L44 28 H56 Z M50 82 L44 72 H56 Z" fill="'+INK+'"/>'),
+width:ring(txt(50,58,20,"2.3m")+'<path d="M14 50 L24 44 V56 Z M86 50 L76 44 V56 Z" fill="'+INK+'"/>'),
+/* Day 2: warning signs */
+bendright:warn('<path d="M42 78 V58 Q42 44 56 40 L58 36" '+bk()+'/><path d="M50 34 L60 34 L58 44" '+bk()+'/>'),
+crossjn:warn('<path d="M50 34 V80 M32 58 H68" '+bk(7)+'/>'),
+tjn:warn('<path d="M50 80 V50 M30 50 H70" '+bk(7)+'/>'),
+sideleft:warn('<path d="M54 34 V80 M54 58 H34" '+bk(7)+'/>'),
+roundabout:warn('<circle cx="50" cy="60" r="13" '+bk()+'/><path d="M37 52 L33 58 L40 59 M60 72 L66 70 L62 64 M58 46 L52 43 L54 50" '+bk(4)+'/>'),
+lights:warn('<rect x="40" y="32" width="20" height="48" rx="4" fill="'+INK+'"/><circle cx="50" cy="42" r="5" fill="#E53935"/><circle cx="50" cy="56" r="5" fill="#FBC02D"/><circle cx="50" cy="70" r="5" fill="#43A047"/>'),
+narrows:warn('<path d="M36 80 L42 56 V34 M64 80 L58 56 V34" '+bk()+'/>'),
+twoway:warn('<path d="M40 80 V40 M34 48 L40 38 L46 48 M60 34 V74 M54 66 L60 76 L66 66" '+bk(5)+'/>'),
+hump:warn('<path d="M24 74 H36 Q50 50 64 74 H76" '+bk()+'/>'),
+slope:warn(txt(50,72,22,"10%")+'<path d="M30 52 L70 40" '+bk(4)+'/>'),
+breakdown:'<polygon points="50,8 94,86 6,86" fill="none" stroke="'+RED+'" stroke-width="10" stroke-linejoin="round"/><polygon points="50,34 72,74 28,74" fill="none" stroke="'+RED+'" stroke-width="4"/>',
+merge:warn('<path d="M56 80 V36 M38 74 Q44 58 56 54" '+bk()+'/>'),
+/* Day 3: tunnel lane signals */
+tgreen:'<rect x="8" y="8" width="84" height="84" rx="6" fill="#111"/><path d="M50 24 V70 M32 54 L50 74 L68 54" fill="none" stroke="#43A047" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>',
+tamber:'<rect x="8" y="8" width="84" height="84" rx="6" fill="#111"/><path d="M28 28 L72 72 M72 28 L28 72" stroke="#FBC02D" stroke-width="9" stroke-linecap="round"/>',
+tred:'<rect x="8" y="8" width="84" height="84" rx="6" fill="#111"/><path d="M28 28 L72 72 M72 28 L28 72" stroke="#E53935" stroke-width="9" stroke-linecap="round"/>',
+/* Day 4: road markings (bird's-eye strips) */
+syl:'<rect width="100" height="100" fill="#5f6368"/><rect x="0" y="0" width="14" height="100" fill="#bdbdbd"/><rect x="20" y="0" width="4" height="100" fill="#FDD835"/>',
+dyl:'<rect width="100" height="100" fill="#5f6368"/><rect x="0" y="0" width="14" height="100" fill="#bdbdbd"/><rect x="18" y="0" width="4" height="100" fill="#FDD835"/><rect x="25" y="0" width="4" height="100" fill="#FDD835"/>',
+szz:'<rect width="100" height="100" fill="#5f6368"/><rect x="0" y="0" width="14" height="100" fill="#bdbdbd"/><path d="M20 0 L30 12 L20 24 L30 36 L20 48 L30 60 L20 72 L30 84 L20 96" fill="none" stroke="#FDD835" stroke-width="4"/>',
+dzz:'<rect width="100" height="100" fill="#5f6368"/><rect x="0" y="0" width="14" height="100" fill="#bdbdbd"/><path d="M18 0 L28 12 L18 24 L28 36 L18 48 L28 60 L18 72 L28 84 L18 96" fill="none" stroke="#FDD835" stroke-width="3.5"/><path d="M26 0 L36 12 L26 24 L36 36 L26 48 L36 60 L26 72 L36 84 L26 96" fill="none" stroke="#FDD835" stroke-width="3.5"/>',
+dwl:'<rect width="100" height="100" fill="#5f6368"/><rect x="45" y="0" width="4" height="100" fill="#fff"/><rect x="52" y="0" width="4" height="100" fill="#fff"/>',
+bwl:'<rect width="100" height="100" fill="#5f6368"/><path d="M50 0 V100" stroke="#fff" stroke-width="4" stroke-dasharray="14 10"/>',
+ybox:'<rect width="100" height="100" fill="#5f6368"/><rect x="14" y="14" width="72" height="72" fill="none" stroke="#FDD835" stroke-width="4"/><path d="M14 14 L86 86 M86 14 L14 86 M14 50 L50 14 M50 86 L86 50 M14 50 L50 86 M50 14 L86 50" stroke="#FDD835" stroke-width="3"/>',
+buslane:'<rect width="100" height="100" fill="#5f6368"/><rect x="0" y="0" width="10" height="100" fill="#bdbdbd"/><rect x="40" y="0" width="4" height="100" fill="#FDD835"/><rect x="48" y="0" width="4" height="100" fill="#E53935"/>'+txt(24,58,12,"BUS","#FDD835"),
+/* Day 5: traffic lights */
+lamber:'<rect x="34" y="6" width="32" height="88" rx="6" fill="#111"/><circle cx="50" cy="22" r="9" fill="#3a1d1d"/><circle cx="50" cy="50" r="9" fill="#FBC02D"/><circle cx="50" cy="78" r="9" fill="#1d3a22"/>',
+lred:'<rect x="34" y="6" width="32" height="88" rx="6" fill="#111"/><circle cx="50" cy="22" r="9" fill="#E53935"/><circle cx="50" cy="50" r="9" fill="#3a331d"/><circle cx="50" cy="78" r="9" fill="#1d3a22"/>',
+lredarrow:'<rect x="20" y="20" width="60" height="60" rx="8" fill="#111"/><path d="M34 50 H64 M54 38 L66 50 L54 62" fill="none" stroke="#E53935" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',
+lgreenarrow:'<rect x="20" y="20" width="60" height="60" rx="8" fill="#111"/><path d="M34 50 H64 M54 38 L66 50 L54 62" fill="none" stroke="#43A047" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',
+lgreenb:'<rect x="20" y="20" width="60" height="60" rx="8" fill="#111"/>'+txt(50,64,40,"B","#43A047"),
+/* Day 12: work zone */
+wz:'<polygon points="50,4 96,50 50,96 4,50" fill="#F57C00" stroke="#111" stroke-width="3"/>'+txt(50,64,40,"!"),
+chevron:'<rect x="6" y="20" width="88" height="60" fill="#111"/><path d="M28 34 L48 50 L28 66 M52 34 L72 50 L52 66" fill="none" stroke="#fff" stroke-width="8"/>'
+};
+function sign(k){return SIGNS[k]?'<svg class="bt-sign" viewBox="0 0 100 100" role="img" aria-label="Road sign">'+SIGNS[k]+'</svg>':""}
+
+/* ---------- page ---------- */
+var app=document.getElementById("bt-app");if(!app){app=E("div",{id:"bt-app"});document.body.appendChild(app)}
+app.innerHTML='<div class="bt-root"><div class="bt-wrap"><header><div class="bt-eyebrow">Personal · Singapore Basic Theory Test · 3 Dec 2026</div><h1 class="bt-h1">BTT Practice Test</h1><p class="bt-lede">Twelve days, thirty questions a day, easy to hard. Tap an answer: green is right, red is wrong, with the reason and the handbook page. These are my own practice questions written from the official handbook, in the style of the Traffic Police practice tests.</p><div class="bt-links"><a class="bt-btn" href="PERS_BTT-Practice-Test.pdf" target="_blank" rel="noopener">⬇ Study guide PDF (all 12 days, tips + answers)</a><a class="bt-btn ghost" href="'+PDF+'" target="_blank" rel="noopener">Official handbook (PDF)</a></div></header><nav class="bt-tabs" id="btTabs" aria-label="Choose a day"></nav><main id="btDay"></main><div class="bt-foot">Source: <a href="'+PDF+'" target="_blank" rel="noopener">Basic Theory of Driving, Official Handbook (Singapore Traffic Police, updated 2 Jan 2026)</a>. Also try the free official <a href="https://eservices1.police.gov.sg/phub/eservices/landingpage/mock-theory-test" target="_blank" rel="noopener">Traffic Police theory test practice</a>. Real test: 50 questions, 50 minutes, 45 to pass.</div></div></div>';
+
+function tabs(){var t=document.getElementById("btTabs");t.innerHTML="";PLAN.forEach(function(p){var b=E("button",{type:"button","class":"bt-tab"+(DATA[p[0]]?"":" soon"),"aria-pressed":String(p[0]===cur),text:"Day "+p[0]});b.onclick=function(){go(p[0])};t.appendChild(b)})}
+function go(n){cur=n;lvl="all";try{history.replaceState(null,"","#day-"+n)}catch(e){}render();try{window.scrollTo({top:0,behavior:"smooth"});parent.postMessage({bttScrollTop:true},"*")}catch(e){}}
+function score(d,el){var qs=d.qs,a=0,r=0;qs.forEach(function(q,i){var v=st[d.day+"-"+i];if(v!==undefined){a++;if(v===q.a)r++}});el.innerHTML="<b>"+r+"</b> / "+a+" correct · "+(qs.length-a)+" left"+(a===qs.length?" · "+(r>=Math.ceil(qs.length*0.9)?"Pass level (90%+)":"Below 90%: review the misses"):"")}
+function render(){absorb();tabs();var p=PLAN[cur-1],d=DATA[cur],root=document.getElementById("btDay");root.innerHTML="";
+root.appendChild(E("div",{"class":"bt-dayhead"},[E("div",{"class":"bt-eyebrow",text:"Day "+p[0]+" · "+p[1]}),E("h2",{"class":"bt-h2",text:p[2]})]));
+var g=E("div",{"class":"bt-grid"});g.style.marginTop="14px";
+var sc=E("div",{"class":"bt-card bt-scope"});sc.innerHTML='<h3>Scope</h3><b>Pages '+p[3]+'</b><p>Official handbook, <i>Basic Theory of Driving</i>. Read these pages first, and look at every picture.</p><p><a href="'+PDF+'" target="_blank" rel="noopener">Open the handbook PDF</a></p>';
+var tp=E("div",{"class":"bt-card"});tp.appendChild(E("h3",{text:"Tips and suggestions"}));
+if(d){var ul=E("ul");d.tips.forEach(function(x){ul.appendChild(E("li",{html:x}))});tp.appendChild(ul)}else tp.appendChild(E("p",{"class":"bt-soon",text:"Coming soon. This day's tips and 30 questions will be added next."}));
+g.appendChild(sc);g.appendChild(tp);root.appendChild(g);
+if(!d){tellHeight();return}
+var bar=E("div",{"class":"bt-quizbar"}),s=E("div",{"class":"bt-score"}),f=E("div",{"class":"bt-filters"});
+[["all","All "+d.qs.length],["e","Easy"],["m","Medium"],["h","Hard"]].forEach(function(x){var b=E("button",{type:"button","class":"bt-ghost","aria-pressed":String(lvl===x[0]),text:x[1]});b.onclick=function(){lvl=x[0];render()};f.appendChild(b)});
+var rs=E("button",{type:"button","class":"bt-ghost",text:"Reset day"});rs.onclick=function(){d.qs.forEach(function(q,i){delete st[d.day+"-"+i]});save();render()};f.appendChild(rs);
+bar.appendChild(E("h3",{"class":"bt-eyebrow",text:"Quiz"}));bar.appendChild(s);bar.appendChild(f);bar.style.marginTop="18px";root.appendChild(bar);
+var list=E("div",{"class":"bt-list"});list.style.marginTop="12px";
+var LV={e:"Easy",m:"Medium",h:"Hard"};
+d.qs.forEach(function(q,i){if(lvl!=="all"&&q.l!==lvl)return;var id=d.day+"-"+i;
+var c=E("div",{"class":"bt-q"});c.appendChild(E("div",{"class":"bt-qtop"},[E("span",{"class":"bt-qn",text:"Q"+(i+1)}),E("span",{"class":"bt-lvl "+q.l,text:LV[q.l]})]));
+if(q.s)c.appendChild(E("div",{html:sign(q.s)}));
+c.appendChild(E("p",{"class":"bt-qtext",text:q.q}));
+var o=E("div",{"class":"bt-opts"}),why=E("div",{"class":"bt-why"}),bs=[];
+q.o.forEach(function(t,j){var b=E("button",{type:"button","class":"bt-opt"},[E("span",{"class":"bt-box"}),E("span",{text:String.fromCharCode(65+j)+". "+t})]);b.onclick=function(){if(st[id]!==undefined)return;st[id]=j;save();paint();score(d,s)};bs.push(b);o.appendChild(b)});
+function paint(){var v=st[id];if(v===undefined)return;bs.forEach(function(b,j){b.disabled=true;if(j===q.a){b.classList.add("ok");b.firstChild.textContent="✓"}if(j===v&&v!==q.a){b.classList.add("no");b.firstChild.textContent="✕"}});why.innerHTML='<span class="v '+(v===q.a?"ok":"no")+'">'+(v===q.a?"Correct.":"Not quite.")+"</span> ";why.appendChild(document.createTextNode(q.w));why.classList.add("show")}
+paint();c.appendChild(o);c.appendChild(why);list.appendChild(c)});
+root.appendChild(list);score(d,s);tellHeight()}
+
+var m=(location.hash||"").match(/^#day-(\d+)$/);
+if(m&&PLAN[m[1]-1])cur=+m[1];else{var n=Math.floor((new Date()-new Date(2026,10,20))/864e5)+1;if(n>=1&&n<=12)cur=n}
+render();
+window.addEventListener("resize",tellHeight);document.addEventListener("click",function(){setTimeout(tellHeight,50)});
+})();
+</script>
+</body>
+</html>
